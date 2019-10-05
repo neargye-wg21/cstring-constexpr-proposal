@@ -26,6 +26,7 @@ matrix:
             - llvm-toolchain-trusty
           packages:
             - clang-9
+            - g++-9
       env:
         - CXX_COMPILER=clang++-9 CC_COMPILER=clang-9
 

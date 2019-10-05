@@ -24,6 +24,7 @@
 #include <catch.hpp>
 
 #include <cstring.hpp>
+namespace proposal = nstd;
 
 #include <array>
 #include <cstring>
@@ -103,21 +104,3 @@ TEST_CASE("strncmp") {
   static_assert(proposal::strncmp(str2, str1, 10) < 0);
   REQUIRE(proposal::strncmp(str2, str1, 10) < 0);
 }
-
-#if defined(__clang__) || defined(_MSC_VER)
-
-TEST_CASE("memcmp") {
-  constexpr char str1[] = "Hello, world!";
-  constexpr char str2[] = "Hello, everybody!";
-
-  static_assert(proposal::memcmp(str1, str2, 5) == 0);
-  REQUIRE(proposal::memcmp(str1, str2, 5) == 0);
-
-  static_assert(proposal::memcmp(str1, str2, 10) > 0);
-  REQUIRE(proposal::memcmp(str1, str2, 10) > 0);
-
-  static_assert(proposal::memcmp(str2, str1, 10) < 0);
-  REQUIRE(proposal::memcmp(str2, str1, 10) < 0);
-}
-
-#endif

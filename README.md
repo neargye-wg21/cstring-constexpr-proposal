@@ -16,10 +16,13 @@ constexpr int strcmp(const char* lhs, const char* rhs) noexcept;
 constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexcept;
 ```
 
-References:
+# References:
 * https://stdcpp.ru/proposals/b6000ec7-9db8-41b1-9a1e-1fe00a424bbd.
 * http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html.
+* https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/bits/char_traits.h
+* https://github.com/freebsd/freebsd/tree/master/sys/libkern
 
-Tested:
+# Tested:
 * GCC 9
+* Clang 9
 * MSVC 1923 (Visual Studio 16.3.2)
