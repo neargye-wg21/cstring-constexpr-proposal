@@ -15,6 +15,7 @@ constexpr std::size_t strlen(const char* str) noexcept {
     while (str[i] != '\0') {
       ++i;
     }
+
     return i;
   } else {
     return std::strlen(str);
@@ -26,6 +27,7 @@ constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept
 #if 0 // when std::copy will constexpr and will suport std::is_constant_evaluated.
   if (std::is_constant_evaluated()) {
     std::copy(src, src + count, dest);
+
     return dest;
   } else {
     return std::strncpy(dest, src, count);
@@ -37,6 +39,7 @@ constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept
     }
     dest[i] = src[i];
   }
+
   return dest;
 #elif defined(__GNUC__)
   if (std::is_constant_evaluated()) {
@@ -46,6 +49,7 @@ constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept
       }
       dest[i] = src[i];
     }
+
     return dest;
   } else {
     return std::strncpy(dest, src, count);
@@ -59,6 +63,7 @@ constexpr char* strcpy(char* dest, const char* src) noexcept {
 
 constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept {
   strncpy(dest + strlen(dest), src, count);
+
   return dest;
 }
 
@@ -80,27 +85,22 @@ constexpr int strcmp(const char* lhs, const char* rhs) noexcept {
     return ans;
   }
 
-  if (lhs_len < rhs_len) {
-    return -1;
-  } else if (lhs_len > rhs_len) {
-    return 1;
+  if (lhs_len != rhs_len) {
+    return lhs_len < rhs_len ? -1 : 1;
   }
 
   return 0;
 #elif defined(__GNUC__)
+// gcc-9 error: __builtin_memcmp is not a constant expression!
   if (std::is_constant_evaluated()) {
     for (std::size_t i = 0; i < len; ++i) {
-      if (lhs[i] < rhs[i]) {
-        return -1;
-      } else if (lhs[i] > rhs[i]) {
-        return 1;
+      if (lhs[i] != rhs[i]) {
+        return lhs[i] < rhs[i] ? -1 : 1;
       }
     }
 
-    if (lhs_len < rhs_len) {
-      return -1;
-    } else if (lhs_len > rhs_len) {
-      return 1;
+    if (lhs_len != rhs_len) {
+      return lhs_len < rhs_len ? -1 : 1;
     }
 
     return 0;
@@ -117,10 +117,8 @@ constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexc
 // gcc-9 error: __builtin_memcmp is not a constant expression!
   if (std::is_constant_evaluated()) {
     for (std::size_t i = 0; i < count; ++i) {
-      if (lhs[i] < rhs[i]) {
-        return -1;
-      } else if (lhs[i] > rhs[i]) {
-        return 1;
+      if (lhs[i] != rhs[i]) {
+        return lhs[i] < rhs[i] ? -1 : 1;
       }
     }
 
@@ -134,6 +132,12 @@ constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexc
 // constexpr work with a locale requires constexpr locale.
 int strcoll(const char* lhs, const char* rhs) noexcept {
   return std::strcoll(lhs, rhs);
+}
+
+constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexcept {
+#if defined(__clang__) || defined(_MSC_VER)
+  return __builtin_memcmp(lhs, rhs, count);
+#endif
 }
 
 } // namespace proposal
