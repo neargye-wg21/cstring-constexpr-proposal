@@ -14,6 +14,11 @@ constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept
 constexpr std::size_t strlen(const char* str) noexcept;
 constexpr int strcmp(const char* lhs, const char* rhs) noexcept;
 constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexcept;
+constexpr const char* strchr(const char* str, int ch) noexcept;
+constexpr char* strchr(char* str, int ch) noexcept;
+constexpr const char* strrchr(const char* str, int ch) noexcept;
+constexpr char* strrchr(char* str, int ch) noexcept;
+
 ```
 
 # References:
