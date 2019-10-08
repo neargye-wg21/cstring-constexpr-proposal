@@ -30,6 +30,18 @@ namespace proposal = nstd;
 #include <cstring>
 #include <iterator>
 
+constexpr bool is_same_signedness(int lhs, int rhs) noexcept {
+  if (lhs < 0) {
+    return rhs < 0;
+  } else if (lhs > 0) {
+    return rhs > 0;
+  } else if (lhs == 0) {
+    return rhs == 0;
+  }
+
+  return lhs == rhs;
+}
+
 TEST_CASE("strcpy") {
   constexpr std::array<char, 7> char_array = {'1', '2', '3', '4', '5', '6', '\0'};
   auto test_strcpy = [](const char* str) constexpr {
@@ -82,13 +94,13 @@ TEST_CASE("strcmp") {
   constexpr char str3[] = "Hello, world!";
 
   static_assert(proposal::strcmp(str1, str2) > 0);
-  REQUIRE(proposal::strcmp(str1, str2) == std::strcmp(str1, str2));
+  REQUIRE(is_same_signedness(proposal::strcmp(str1, str2), std::strcmp(str1, str2)));
 
   static_assert(proposal::strcmp(str2, str3) < 0);
-  REQUIRE(proposal::strcmp(str2, str3) == std::strcmp(str2, str3));
+  REQUIRE(is_same_signedness(proposal::strcmp(str2, str3), std::strcmp(str2, str3)));
 
   static_assert(proposal::strcmp(str1, str3) == 0);
-  REQUIRE(proposal::strcmp(str1, str3) == std::strcmp(str1, str3));
+  REQUIRE(is_same_signedness(proposal::strcmp(str1, str3), std::strcmp(str1, str3)));
 }
 
 TEST_CASE("strncmp") {
@@ -96,13 +108,13 @@ TEST_CASE("strncmp") {
   constexpr char str2[] = "Hello, everybody!";
 
   static_assert(proposal::strncmp(str1, str2, 5) == 0);
-  REQUIRE(proposal::strncmp(str1, str2, 5) == std::strncmp(str1, str2, 5));
+  REQUIRE(is_same_signedness(proposal::strncmp(str1, str2, 5), std::strncmp(str1, str2, 5)));
 
   static_assert(proposal::strncmp(str1, str2, 10) > 0);
-  REQUIRE(proposal::strncmp(str1, str2, 10) == std::strncmp(str1, str2, 10));
+  REQUIRE(is_same_signedness(proposal::strncmp(str1, str2, 10), std::strncmp(str1, str2, 10)));
 
   static_assert(proposal::strncmp(str2, str1, 10) < 0);
-  REQUIRE(proposal::strncmp(str2, str1, 10) == std::strncmp(str2, str1, 10));
+  REQUIRE(is_same_signedness(proposal::strncmp(str2, str1, 10), std::strncmp(str2, str1, 10)));
 }
 
 TEST_CASE("strchr") {
@@ -153,13 +165,13 @@ TEST_CASE("memcmp") {
   constexpr char str2[] = "Hello, everybody!";
 
   static_assert(proposal::memcmp(str1, str2, 5) == 0);
-  REQUIRE(proposal::memcmp(str1, str2, 5) == std::memcmp(str1, str2, 5));
+  REQUIRE(is_same_signedness(proposal::memcmp(str1, str2, 5), std::memcmp(str1, str2, 5)));
 
   static_assert(proposal::memcmp(str1, str2, 10) > 0);
-  REQUIRE(proposal::memcmp(str1, str2, 10) == std::memcmp(str1, str2, 10));
+  REQUIRE(is_same_signedness(proposal::memcmp(str1, str2, 10), std::memcmp(str1, str2, 10)));
 
   static_assert(proposal::memcmp(str2, str1, 10) < 0);
-  REQUIRE(proposal::memcmp(str2, str1, 10) == std::memcmp(str2, str1, 10));
+  REQUIRE(is_same_signedness(proposal::memcmp(str2, str1, 10), std::memcmp(str2, str1, 10)));
 }
 #endif
 
