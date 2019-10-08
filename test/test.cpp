@@ -70,9 +70,28 @@ TEST_CASE("strncpy") {
 }
 
 TEST_CASE("strcat") {
+  auto test_strcat = []() constexpr {
+    char str1[50] = "Hello ";
+    char str2[50] = "World!";
+    proposal::strcat(str1, str2);
+    return proposal::strcmp(str1, "Hello World!") == 0;
+  };
+
+  constexpr bool b = test_strcat();
+  static_assert(b);
 }
 
 TEST_CASE("strncat") {
+  auto test_strncat = []() constexpr {
+    const std::size_t n = 3;
+    char str1[50] = "Hello ";
+    char str2[50] = "World!";
+    proposal::strncat(str1, str2, n);
+    return proposal::strncmp(str1, "Hello World!", proposal::strlen(str1)) == 0;
+  };
+
+  constexpr bool b = test_strncat();
+  static_assert(b);
 }
 
 TEST_CASE("strlen") {
@@ -118,44 +137,126 @@ TEST_CASE("strncmp") {
 }
 
 TEST_CASE("strchr") {
+  auto test_strchr = []() constexpr {
+    char str[] = "Try not. Do, or do not. There is no try.";
+    char target = 'D';
+    return proposal::strchr(str, target) != nullptr;
+  };
+
+  constexpr bool b = test_strchr();
+  static_assert(b);
+
+  char str[] = "Try not. Do, or do not. There is no try.";
+  char target = 'D';
+  REQUIRE(proposal::strchr(str, target) == std::strchr(str, target));
 }
 
 TEST_CASE("const strchr") {
+  constexpr char str[] = "Try not. Do, or do not. There is no try.";
+  constexpr char target = 'D';
+  static_assert(proposal::strchr(str, target) != nullptr);
+  REQUIRE(proposal::strchr(str, target) == std::strchr(str, target));
 }
 
 TEST_CASE("strrchr") {
+  auto test_strrchr = []() constexpr {
+    char str[] = "/home/user/hello.c";
+    char ch = '/';
+    return proposal::strrchr(str, ch) != nullptr;
+  };
+
+  constexpr bool b = test_strrchr();
+  static_assert(b);
+
+  char str[] = "/home/user/hello.c";
+  char ch = '/';
+  REQUIRE(proposal::strrchr(str, ch) == std::strrchr(str, ch));
 }
 
 TEST_CASE("const strrchr") {
+  constexpr char str[] = "/home/user/hello.c";
+  constexpr char ch = '/';
+  static_assert(proposal::strrchr(str, ch) != nullptr);
+  REQUIRE(proposal::strrchr(str, ch) == std::strrchr(str, ch));
 }
 
 TEST_CASE("strspn") {
+  constexpr char low_alpha[] = "qwertyuiopasdfghjklzxcvbnm";
+  constexpr char str[]= "abcde312$#@";
+  static_assert(proposal::strspn(str, low_alpha) == 5);
+  REQUIRE(proposal::strspn(str, low_alpha) == std::strspn(str, low_alpha));
 }
 
 TEST_CASE("strcspn") {
+  constexpr char invalid [] = "*$#";
+  constexpr char str[]= "abcde312$#@";
+  static_assert(proposal::strcspn(str, invalid) == 8);
+  REQUIRE(proposal::strcspn(str, invalid) == std::strcspn(str, invalid));
 }
 
 TEST_CASE("strpbrk") {
+  auto test_strpbrk = []() constexpr {
+    char str[] = "hello world, friend of mine!";
+    char sep[] = " ,!";
+    return proposal::strpbrk(str, sep) != nullptr;
+  };
+
+  constexpr bool b = test_strpbrk();
+  static_assert(b);
+
+  char str[] = "hello world, friend of mine!";
+  char sep[] = " ,!";
+  REQUIRE(proposal::strpbrk(str, sep) == std::strpbrk(str, sep));
 }
 
 TEST_CASE("const strpbrk") {
+  constexpr char str[] = "hello world, friend of mine!";
+  constexpr char sep[] = " ,!";
+  static_assert(proposal::strpbrk(str, sep) != nullptr);
+  REQUIRE(proposal::strpbrk(str, sep) == std::strpbrk(str, sep));
 }
 
 TEST_CASE("strstr") {
+  auto test_strstr = []() constexpr {
+    char str[] = "Try not. Do, or do not. There is no try.";
+    char target[] = "not";
+    return proposal::strstr(str, target) != nullptr;
+  };
+
+  constexpr bool b = test_strstr();
+  static_assert(b);
+
+  char str[] = "Try not. Do, or do not. There is no try.";
+  char target[] = "not";
+  REQUIRE(proposal::strstr(str, target) == std::strstr(str, target));
 }
 
 TEST_CASE("const strstr") {
+  constexpr char str[] = "Try not. Do, or do not. There is no try.";
+  constexpr char target[] = "not";
+  static_assert(proposal::strstr(str, target) != nullptr);
+  REQUIRE(proposal::strstr(str, target) == std::strstr(str, target));
 }
 
 #if defined(__clang__)
 TEST_CASE("memchr") {
+    auto test_memchr = []() constexpr {
+    char arr[] = "ABCDEFG";
+    return proposal::memchr(arr, 'B', sizeof(arr)) != nullptr;
+  };
+
+  constexpr bool b = test_memchr();
+  static_assert(b);
+
+  char arr[] = "ABCDEFG";
+  REQUIRE(proposal::memchr(arr, 'D', sizeof(arr)) == std::memchr(arr, 'D', sizeof(arr)));
 }
 
 TEST_CASE("const memchr") {
-  constexpr char arr[] = {'a','\0','a','A','a','a','A','a'};
+  constexpr char arr[] = "ABCDEFG";
 
-  static_assert(proposal::memchr(arr, 'A', sizeof(arr)) != nullptr);
-  REQUIRE(proposal::memchr(arr, 'A', sizeof(arr)) == std::memchr(arr, 'A', sizeof(arr)));
+  static_assert(proposal::memchr(arr, 'E', sizeof(arr)) != nullptr);
+  REQUIRE(proposal::memchr(arr, 'E', sizeof(arr)) == std::memchr(arr, 'E', sizeof(arr)));
 }
 #endif
 
