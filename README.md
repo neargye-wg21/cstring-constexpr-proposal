@@ -1,11 +1,29 @@
-# cstring constexpr proposals
+# Add Constexpr Modifiers to Functions in <cstring> Headers
 
-[![Build Status](https://travis-ci.org/Neargye/cstring-constexpr-proposal.svg?branch=master)](https://travis-ci.org/Neargye/cstring-constexpr-proposal)
-[![Build status](https://ci.appveyor.com/api/projects/status/af05o6972g9bc4ec/branch/master?svg=true)](https://ci.appveyor.com/project/Neargye/cstring-constexpr-proposal/branch/master)
+Antony Polukhin <antoshkka@gmail.com>
 
-All the functions from <cstring> header must be marked with constexpr, except the strcoll, strxfrm, strtok, strerror functions.
+Daniil Goncharov <neargye@gmail.com>
+
+# Impact on the Standard
+This proposal is a pure library extension. It proposes changes to existing headers `<cstring>` such that the changes do not break existing code and do not degrade performance. It does not require any changes in the core language in simple cases of non assembly optimized Standard Library, and it could be implemented in standard C++, except for the memcpy and memmove functions.
+
+# Design Decisions
+
+## A. <cstring> must have constexpr additions
+
+All the functions from `<cstring>` header must be marked with constexpr, except the strcoll, strxfrm, strtok, strerror functions.
+
+## B. std::memmove and std::memcpy must have constexpr additions
+
+`std::memmove` and `std::memcpy` accept `void*` and `const void*` parameters. This makes them impossible to implement in pure C++ as constexpr, because constant expressions can not evaluate a conversion from type cv `void *` to a pointer-to-object type according to [expr.const].
+
+However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them constexpr will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
+
+# Modifications to "21.8 Null-terminated sequence utilities" [c.strings]
 
 ```cpp
+namespace std {
+
 constexpr char* strcpy(char* dest, const char* src) noexcept;
 constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept;
 constexpr char* strcat(char* dest, const char* src) noexcept;
@@ -35,6 +53,8 @@ char* strtok(char* str, const char* delim) noexcept;
 constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexcept;
 
 char* strerror(int errnum) noexcept;
+
+} // namespace std
 ```
 
 # References:
@@ -44,6 +64,9 @@ char* strerror(int errnum) noexcept;
 * https://github.com/freebsd/freebsd/tree/master/sys/libkern
 
 # Tested:
+[![Build Status](https://travis-ci.org/Neargye/cstring-constexpr-proposal.svg?branch=master)](https://travis-ci.org/Neargye/cstring-constexpr-proposal)
+[![Build status](https://ci.appveyor.com/api/projects/status/af05o6972g9bc4ec/branch/master?svg=true)](https://ci.appveyor.com/project/Neargye/cstring-constexpr-proposal/branch/master)
+
 * GCC 9
 * Clang 9
 * MSVC 1923 (Visual Studio 16.3.2)
