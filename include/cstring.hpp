@@ -5,6 +5,11 @@
 
 namespace nstd {
 
+#if defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable : 4996)
+#endif
+
 #if defined(__GNUC__) && !defined(__clang__)
 constexpr bool is_constant_evaluated() {
   return std::is_constant_evaluated();
@@ -341,6 +346,36 @@ char* strtok(char* str, const char* delim) noexcept {
   return std::strtok(str, delim);
 }
 
+constexpr const void* memchr(const void* ptr, int ch, std::size_t count) noexcept {
+  if (is_constant_evaluated()) {
+#if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
+    (void)ptr;
+    (void)ch;
+    (void)count;
+    return 0; //TODO
+#elif defined(__clang__) || defined(_MSC_VER)
+    return __builtin_memchr(ptr, ch, count);
+#endif
+  }
+
+  return std::memchr(ptr, ch, count);
+}
+
+constexpr void* memchr(void* ptr, int ch, std::size_t count) noexcept {
+  if (is_constant_evaluated()) {
+#if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
+    (void)ptr;
+    (void)ch;
+    (void)count;
+    return 0; //TODO
+#elif defined(__clang__)
+    return __builtin_memchr(ptr, ch, count);
+#endif
+  }
+
+  return std::memchr(ptr, ch, count);
+}
+
 constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexcept {
   if (is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
@@ -356,10 +391,58 @@ constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexce
   return std::memcmp(lhs, rhs, count);
 }
 
+constexpr void* memset(void* dest, int ch, std::size_t count) noexcept {
+  if (is_constant_evaluated()) {
+#if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
+    (void)dest;
+    (void)ch;
+    (void)count;
+    return 0; //TODO
+#elif defined(__clang__)
+    return __builtin_memset(dest, ch, count);
+#endif
+  }
+
+  return std::memset(dest, ch, count);
+}
+
+constexpr void* memcpy(void* dest, const void* src, std::size_t count) noexcept {
+  if (is_constant_evaluated()) {
+#if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
+    (void)dest;
+    (void)src;
+    (void)count;
+    return 0; //TODO
+#elif defined(__clang__)
+    return __builtin_memcpy(dest, src, count);
+#endif
+  }
+
+  return std::memcpy(dest, src, count);
+}
+
+constexpr void* memmove(void* dest, const void* src, std::size_t count) noexcept {
+  if (is_constant_evaluated()) {
+#if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
+    (void)dest;
+    (void)src;
+    (void)count;
+    return 0; //TODO
+#elif defined(__clang__)
+    return __builtin_memmove(dest, src, count);
+#endif
+  }
+
+  return std::memmove(dest, src, count);
+}
 
 // System error code non constexpr context.
 char* strerror(int errnum) noexcept {
   return std::strerror(errnum);
 }
+
+#if defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
 } // namespace nstd

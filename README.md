@@ -19,38 +19,47 @@ All the functions from `<cstring>` header must be marked with constexpr, except 
 
 However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them constexpr will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
 
+Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_memset, __builtin_memcpy, __builtin_memmove:
+* https://github.com/llvm-mirror/clang/blob/master/test/SemaCXX/constexpr-string.cpp
+* https://rev.ng/gitlab/revng-bar-2019/clang/commit/0f097ac04fc21e27a382b6b896f52a12e0c02b97
+
 # Modifications to "21.8 Null-terminated sequence utilities" [c.strings]
 
 ```cpp
 namespace std {
 
-constexpr char* strcpy(char* dest, const char* src) noexcept;
-constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept;
-constexpr char* strcat(char* dest, const char* src) noexcept;
-constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept;
+constexpr char* strcpy(char* dest, const char* src) noexcept; // gcc, clang, msvc
+constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept; // gcc, clang, msvc
+constexpr char* strcat(char* dest, const char* src) noexcept; // gcc, clang, msvc
+constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept; // gcc, clang, msvc
 
-std::size_t strxfrm(char* dest, const char* src, std::size_t count) noexcept;
+std::size_t strxfrm(char* dest, const char* src, std::size_t count) noexcept; // gcc, clang, msvc
 
-constexpr std::size_t strlen(const char* str) noexcept;
-constexpr int strcmp(const char* lhs, const char* rhs) noexcept;
-constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexcept;
+constexpr std::size_t strlen(const char* str) noexcept; // gcc, clang, msvc
+constexpr int strcmp(const char* lhs, const char* rhs) noexcept; // gcc, clang, msvc
+constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexcept; // gcc, clang, msvc
 
-int strcoll(const char* lhs, const char* rhs) noexcept;
+int strcoll(const char* lhs, const char* rhs) noexcept; // gcc, clang, msvc
 
-constexpr const char* strchr(const char* str, int ch) noexcept;
-constexpr char* strchr(char* str, int ch) noexcept;
-constexpr const char* strrchr(const char* str, int ch) noexcept;
-constexpr char* strrchr(char* str, int ch) noexcept;
-constexpr std::size_t strspn(const char* dest, const char* src) noexcept;
-constexpr std::size_t strcspn(const char* dest, const char* src) noexcept;
-constexpr const char* strpbrk(const char* dest, const char* breakset) noexcept;
-constexpr char* strpbrk(char* dest, const char* breakset) noexcept;
-constexpr const char* strstr(const char* str, const char* target) noexcept;
-constexpr char* strstr(char* str, const char* target) noexcept;
+constexpr const char* strchr(const char* str, int ch) noexcept; // gcc, clang, msvc
+constexpr char* strchr(char* str, int ch) noexcept; // gcc, clang, msvc
+constexpr const char* strrchr(const char* str, int ch) noexcept; // gcc, clang, msvc
+constexpr char* strrchr(char* str, int ch) noexcept; // gcc, clang, msvc
+constexpr std::size_t strspn(const char* dest, const char* src) noexcept; // gcc, clang, msvc
+constexpr std::size_t strcspn(const char* dest, const char* src) noexcept; // gcc, clang, msvc
+constexpr const char* strpbrk(const char* dest, const char* breakset) noexcept; // gcc, clang, msvc
+constexpr char* strpbrk(char* dest, const char* breakset) noexcept; // gcc, clang, msvc
+constexpr const char* strstr(const char* str, const char* target) noexcept; // gcc, clang, msvc
+constexpr char* strstr(char* str, const char* target) noexcept; // gcc, clang, msvc
 
-char* strtok(char* str, const char* delim) noexcept;
+char* strtok(char* str, const char* delim) noexcept; // gcc, clang, msvc
 
-constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexcept;
+constexpr const void* memchr(const void* ptr, int ch, std::size_t count) noexcept; // clang
+constexpr void* memchr(void* ptr, int ch, std::size_t count) noexcept; // clang
+constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexcept; // clang, msvc
+constexpr void* memset(void* dest, int ch, std::size_t count) noexcept; // 0
+constexpr void* memcpy(void* dest, const void* src, std::size_t count) noexcept; // clang
+constexpr void* memmove(void* dest, const void* src, std::size_t count) noexcept; // clang
 
 char* strerror(int errnum) noexcept;
 
