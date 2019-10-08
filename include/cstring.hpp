@@ -335,11 +335,9 @@ constexpr char* strstr(char* str, const char* target) noexcept {
   return std::strstr(str, target);
 }
 
-constexpr char* strtok(char* str, const char* delim) noexcept {
-  if (is_constant_evaluated()) {
-    return 0; //TODO
-  }
-
+// Unlike most other tokenizers, the delimiters in strtok can be different for each subsequent token, and can even depend on the contents of the previous tokens.
+// Each call to this function modifies a static variable, so can't be constexpr.
+char* strtok(char* str, const char* delim) noexcept {
   return std::strtok(str, delim);
 }
 
