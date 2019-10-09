@@ -243,7 +243,7 @@ constexpr std::size_t strspn(const char* dest, const char* src) noexcept {
     // Naive implementation.
     std::size_t i = 0;
     while (dest[i] != '\0' && strchr(src, dest[i]) != nullptr) {
-      i++;
+      ++i;
     }
 
     return i;
@@ -257,7 +257,7 @@ constexpr std::size_t strcspn(const char* dest, const char* src) noexcept {
     // Naive implementation.
     std::size_t i = 0;
     while (dest[i] != '\0' && strchr(src, dest[i]) == nullptr) {
-      i++;
+      ++i;
     }
 
     return i;
@@ -309,7 +309,7 @@ constexpr const char* strstr(const char* str, const char* target) noexcept {
           }
         } while (sc != c);
       } while (strncmp(str, target, len) != 0);
-      str--;
+      --str;
     }
 
     return str;
@@ -331,7 +331,7 @@ constexpr char* strstr(char* str, const char* target) noexcept {
           }
         } while (sc != c);
       } while (strncmp(str, target, len) != 0);
-      str--;
+      --str;
     }
 
     return str;
@@ -353,7 +353,7 @@ constexpr const void* memchr(const void* ptr, int ch, std::size_t count) noexcep
     (void)ch;
     (void)count;
     return 0; //TODO
-#elif defined(__clang__) || defined(_MSC_VER)
+#elif defined(__clang__)
     return __builtin_memchr(ptr, ch, count);
 #endif
   } else {
