@@ -1,6 +1,8 @@
+#pragma once
+
 #include <cstddef> // NULL, size_t
-#include <algorithm> // min
 #include <cstring>
+#include "detail.hpp"
 
 namespace nstd {
 
@@ -8,21 +10,6 @@ namespace nstd {
 #  pragma warning(push)
 #  pragma warning(disable : 4996)
 #endif
-
-namespace detail {
-
-// Temporary, until there is no full support.
-#if defined(__GNUC__) || defined(__clang__)
-constexpr bool is_constant_evaluated() noexcept {
-  return __builtin_is_constant_evaluated();
-}
-#elif defined(_MSC_VER)
-constexpr bool is_constant_evaluated() noexcept {
-  return true;
-}
-#endif
-
-}
 
 constexpr char* strcpy(char* dest, const char* src) noexcept {
   if (detail::is_constant_evaluated()) {
@@ -127,7 +114,7 @@ constexpr int strcmp(const char* lhs, const char* rhs) noexcept {
     // https://github.com/microsoft/STL/blob/cd8fee03209d3312bf3c79abf81371290f116d84/stl/inc/xstring#L513
     const std::size_t lhs_len = strlen(lhs);
     const std::size_t rhs_len = strlen(rhs);
-    const std::size_t len = std::min(lhs_len, rhs_len);
+    const std::size_t len = lhs_len < rhs_len ? lhs_len : rhs_len; // min(lhs_len, rhs_len)
 #if defined(__GNUC__) && !defined(__clang__)
     // https://github.com/gcc-mirror/gcc/blob/13b9cbfc32fe3ac4c81c4dd9c42d141c8fb95db4/libstdc%2B%2B-v3/include/bits/char_traits.h#L655
     for (std::size_t i = 0; i < len; ++i) {
@@ -344,6 +331,28 @@ constexpr char* strstr(char* str, const char* target) noexcept {
 // Each call to this function modifies a static variable, so can't be constexpr.
 char* strtok(char* str, const char* delim) noexcept {
   return std::strtok(str, delim);
+}
+
+// Unlike std::strtok, this function does not update static storage: it stores the parser state in the user-provided location.
+constexpr char* strtok(char* str, const char* delim, char** ptr) noexcept {
+  // Naive implementation.
+  if (str == nullptr && (str = *ptr) == nullptr) {
+    return nullptr;
+  }
+
+  str += strspn(str, delim);
+  if (*str == '\0') {
+    return *ptr = nullptr;
+  }
+
+  *ptr = str + strspn(str, delim);
+  if (**ptr != '\0') {
+    *(*ptr)++ = '\0';
+  } else {
+    *ptr = nullptr;
+  }
+
+  return str;
 }
 
 constexpr const void* memchr(const void* ptr, int ch, std::size_t count) noexcept {

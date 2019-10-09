@@ -23,6 +23,13 @@ Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_me
 * https://github.com/llvm-mirror/clang/blob/master/test/SemaCXX/constexpr-string.cpp
 * https://rev.ng/gitlab/revng-bar-2019/clang/commit/0f097ac04fc21e27a382b6b896f52a12e0c02b97
 
+# C. Add strtok(char* str, const char* delim, char** ptr)
+
+Unlike std::strtok, this function does not update static storage: it stores the parser state in the user-provided location.
+```cpp
+constexpr char* strtok(char* str, const char* delim, char** ptr) noexcept;
+```
+
 # Modifications to "21.8 Null-terminated sequence utilities" [c.strings]
 
 ```cpp
@@ -53,6 +60,7 @@ constexpr const char* strstr(const char* str, const char* target) noexcept; // g
 constexpr char* strstr(char* str, const char* target) noexcept; // gcc, clang, msvc
 
 char* strtok(char* str, const char* delim) noexcept; // gcc, clang, msvc
+constexpr char* strtok(char* str, const char* delim, char** ptr) noexcept;
 
 constexpr const void* memchr(const void* ptr, int ch, std::size_t count) noexcept; // clang
 constexpr void* memchr(void* ptr, int ch, std::size_t count) noexcept; // clang
