@@ -1,7 +1,5 @@
 ﻿include(CheckCXXCompilerFlag)
 
-set(SOURCES test.cpp)
-
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(OPTIONS /W4)
     check_cxx_compiler_flag(/permissive HAS_PERMISSIVE_FLAG)
@@ -19,8 +17,8 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     check_cxx_compiler_flag(-std=c++20 HAS_CPP20_FLAG)
 endif()
 
-function(make_test target std)
-    add_executable(${target} ${SOURCES})
+function(make_test target std sources)
+    add_executable(${target} ${sources})
     target_compile_options(${target} PRIVATE ${OPTIONS})
     target_include_directories(${target} PRIVATE 3rdparty/Catch2)
     target_link_libraries(${target} PRIVATE ${CMAKE_PROJECT_NAME})
@@ -36,13 +34,16 @@ function(make_test target std)
 endfunction()
 
 if(HAS_CPP20_FLAG)
-    make_test(${CMAKE_PROJECT_NAME}-cpp20.t c++20)
+    make_test(${CMAKE_PROJECT_NAME}_char-cpp20.t c++20 test_char.cpp)
+    make_test(${CMAKE_PROJECT_NAME}_wchar-cpp20.t c++20 test_wchar.cpp)
 endif()
 
 if(HAS_CPP2A_FLAG)
-    make_test(${CMAKE_PROJECT_NAME}-cpp2a.t c++2a)
+    make_test(${CMAKE_PROJECT_NAME}_char-cpp2a.t c++2a test_char.cpp)
+    make_test(${CMAKE_PROJECT_NAME}_wchar-cpp2a.t c++2a test_char.cpp)
 endif()
 
 if(HAS_CPPLATEST_FLAG)
-    make_test(${CMAKE_PROJECT_NAME}-cpplatest.t c++latest)
+    make_test(${CMAKE_PROJECT_NAME}_char-cpplatest.t c++latest test_char.cpp)
+    make_test(${CMAKE_PROJECT_NAME}_wchar-cpplatest.t c++latest test_wchar.cpp)
 endif()

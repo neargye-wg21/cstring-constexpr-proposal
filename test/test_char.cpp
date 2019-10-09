@@ -24,6 +24,7 @@
 #include <catch.hpp>
 
 #include <cstring.hpp>
+#include <cwchar.hpp>
 namespace proposal = nstd;
 
 #include <array>
@@ -45,7 +46,7 @@ constexpr bool is_same_signedness(int lhs, int rhs) noexcept {
 TEST_CASE("strcpy") {
   constexpr std::array<char, 7> char_array = {'1', '2', '3', '4', '5', '6', '\0'};
   auto test_strcpy = [](const char* str) constexpr {
-    std::array<char, 32> m = {'\0'};
+    std::array<char, 32> m = {};
     proposal::strcpy(m.data(), str);
     return m;
   };
@@ -59,7 +60,7 @@ TEST_CASE("strncpy") {
   constexpr std::array<char, 7> char_array = {'1', '2', '3', '4', '5', '6', '\0'};
   constexpr auto n = 5;
   auto test_strncpy = [](const char* str, std::size_t n) constexpr {
-    std::array<char, 32> m = {'\0'};
+    std::array<char, 32> m = {};
     proposal::strncpy(m.data(), str, n);
     return m;
   };
@@ -236,6 +237,9 @@ TEST_CASE("const strstr") {
   constexpr char target[] = "not";
   static_assert(proposal::strstr(str, target) != nullptr);
   REQUIRE(proposal::strstr(str, target) == std::strstr(str, target));
+}
+
+TEST_CASE("strtok") {
 }
 
 #if defined(__clang__)

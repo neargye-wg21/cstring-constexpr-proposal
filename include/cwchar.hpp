@@ -330,10 +330,10 @@ constexpr wchar_t* wcsstr(wchar_t* str, const wchar_t* target) noexcept {
 constexpr wchar_t* wcstok(wchar_t* str, const wchar_t* delim, wchar_t** ptr) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER) || defined(__clang__)
-  // Naive implementation.
-  if (str == nullptr && (str = *ptr) == nullptr) {
-    return nullptr;
-  }
+    // Naive implementation.
+    if (str == nullptr && (str = *ptr) == nullptr) {
+      return nullptr;
+    }
 
     str += wcsspn(str, delim);
     if (*str == L'\0') {
@@ -358,8 +358,10 @@ constexpr wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, std::size_t count)
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     // Naive implementation.
-    for (std::size_t i = 0; i < count; ++i) {
-      dest[i] = src[i];
+    if (dest != nullptr && src != nullptr) {
+      for (std::size_t i = 0; i < count; ++i) {
+        dest[i] = src[i];
+      }
     }
 
     return dest;
@@ -375,13 +377,18 @@ constexpr wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, std::size_t count
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     // Naive implementation.
-    if (dest < src) {
-      for (std::size_t i = 0; i < count; ++i) {
-        dest[i] = src[i];
-      }
-    } else {
-      for (std::size_t i = count - 1; i > 0; --i) {
-        dest[i] = src[i];
+    if (dest != nullptr && src != nullptr) {
+      wchar_t* d = dest;
+      if (dest > src) {
+        const wchar_t* s = src + count;
+        d += count;
+        for (; count; --count) {
+          *(--d) = *(--s);
+        }
+      } else if (dest < src) {
+        for (; count; --count) {
+          *(d++) = *(src++);
+        }
       }
     }
 
@@ -398,9 +405,11 @@ constexpr int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count)
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
     // Naive implementation.
-    for (std::size_t i = 0; i < count; ++i) {
-      if (lhs[i] != rhs[i]) {
-        return lhs[i] < rhs[i] ? -1 : 1;
+    if (dest != nullptr && src != nullptr) {
+      for (std::size_t i = 0; i < count; ++i) {
+        if (lhs[i] != rhs[i]) {
+          return lhs[i] < rhs[i] ? -1 : 1;
+        }
       }
     }
 
@@ -417,9 +426,11 @@ constexpr const wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, std::size_t cou
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     // Naive implementation.
-    for (std::size_t i = 0; i < count; ++i) {
-      if (ptr[i] == ch) {
-        return &ptr[i];
+    if (ptr != nullptr) {
+      for (std::size_t i = 0; i < count; ++i) {
+        if (ptr[i] == ch) {
+          return &ptr[i];
+        }
       }
     }
 
@@ -436,9 +447,11 @@ constexpr wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count) noexcept
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     // Naive implementation.
-    for (std::size_t i = 0; i < count; ++i) {
-      if (ptr[i] == ch) {
-        return &ptr[i];
+    if (ptr != nullptr) {
+      for (std::size_t i = 0; i < count; ++i) {
+        if (ptr[i] == ch) {
+          return &ptr[i];
+        }
       }
     }
 
@@ -453,10 +466,13 @@ constexpr wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count) noexcept
 
 constexpr wchar_t* wmemset(wchar_t* dest, wchar_t ch, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
+  // clang no __builtin_memset ?
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER) || defined(__clang__)
     // Naive implementation.
-    for (std::size_t i = 0; i < count; ++i) {
-      dest[i] = ch;
+    if (dest != nullptr) {
+      for (std::size_t i = 0; i < count; ++i) {
+        dest[i] = ch;
+      }
     }
 
     return dest;
