@@ -14,9 +14,10 @@ namespace nstd {
 constexpr char* strcpy(char* dest, const char* src) noexcept {
   if (detail::is_constant_evaluated()) {
     // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strcpy.c
-    char* d = dest;
-
-    for (; (*d = *src) != '\0'; ++d, ++src) {
+    if (dest != nullptr && src != nullptr) {
+      char* d = dest;
+      for (; (*d = *src) != '\0'; ++d, ++src) {
+      }
     }
 
     return dest;
@@ -28,9 +29,8 @@ constexpr char* strcpy(char* dest, const char* src) noexcept {
 constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
     // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strncpy.c
-    if (count != 0) {
+    if (dest != nullptr && src != nullptr && count != 0) {
       char* d = dest;
-
       do {
         if ((*d++ = *src++) == '\0') {
           while (--count != 0) {
@@ -50,11 +50,12 @@ constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept
 constexpr char* strcat(char* dest, const char* src) noexcept {
   if (detail::is_constant_evaluated()) {
     // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strcat.c
-    char* d = dest;
-
-    for (; *d != '\0'; ++d) {
-    }
-    while ((*d++ = *src++) != '\0') {
+    if (dest != nullptr && src != nullptr) {
+      char* d = dest;
+      for (; *d != '\0'; ++d) {
+      }
+      while ((*d++ = *src++) != '\0') {
+      }
     }
 
     return dest;
@@ -66,9 +67,8 @@ constexpr char* strcat(char* dest, const char* src) noexcept {
 constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
     // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strncat.c
-    if (count != 0) {
+    if (dest != nullptr && src != nullptr && count != 0) {
       char* d = dest;
-
       for (; *d != '\0'; ++d) {
       }
       do {
@@ -95,12 +95,16 @@ constexpr std::size_t strlen(const char* str) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
     // https://github.com/gcc-mirror/gcc/blob/5c7634a0e5f202935aa6c11b6ea953b8bf80a00a/libstdc%2B%2B-v3/include/bits/char_traits.h#L329
-    std::size_t i = 0;
-    while (str[i] != '\0') {
-      ++i;
+    if (str != nullptr) {
+      std::size_t i = 0;
+      while (str[i] != '\0') {
+        ++i;
+      }
+
+      return i;
     }
 
-    return i;
+    return 0;
 #elif defined(__clang__) || defined(_MSC_VER)
     return __builtin_strlen(str);
 #endif
@@ -111,27 +115,18 @@ constexpr std::size_t strlen(const char* str) noexcept {
 
 constexpr int strcmp(const char* lhs, const char* rhs) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/microsoft/STL/blob/cd8fee03209d3312bf3c79abf81371290f116d84/stl/inc/xstring#L513
-    const std::size_t lhs_len = strlen(lhs);
-    const std::size_t rhs_len = strlen(rhs);
-    const std::size_t len = lhs_len < rhs_len ? lhs_len : rhs_len; // min(lhs_len, rhs_len)
-#if defined(__GNUC__) && !defined(__clang__)
-    // https://github.com/gcc-mirror/gcc/blob/13b9cbfc32fe3ac4c81c4dd9c42d141c8fb95db4/libstdc%2B%2B-v3/include/bits/char_traits.h#L655
-    for (std::size_t i = 0; i < len; ++i) {
-      if (lhs[i] != rhs[i]) {
-        return lhs[i] < rhs[i] ? -1 : 1;
-      }
-    }
-#elif defined(__clang__) || defined(_MSC_VER)
-    if (const int ans = __builtin_memcmp(lhs, rhs, len); ans != 0) {
-      return ans;
-    }
-#endif
-    if (lhs_len != rhs_len) {
-      return lhs_len < rhs_len ? -1 : 1;
+    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strcmp.c
+    if (lhs == nullptr || rhs == nullptr) {
+      return rhs != nullptr ? -1 : 1;
     }
 
-    return 0;
+    while (*lhs == *rhs++) {
+      if (*lhs++ == '\0') {
+        return 0;
+      }
+    }
+
+    return static_cast<unsigned int>(*lhs) -static_cast<unsigned int>(*(rhs - 1));
   } else {
     return std::strcmp(lhs, rhs);
   }
@@ -141,6 +136,10 @@ constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexc
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
     // https://github.com/gcc-mirror/gcc/blob/13b9cbfc32fe3ac4c81c4dd9c42d141c8fb95db4/libstdc%2B%2B-v3/include/bits/char_traits.h#L655
+    if (lhs == nullptr || rhs == nullptr) {
+      return rhs != nullptr ? -1 : 1;
+    }
+
     for (std::size_t i = 0; i < count; ++i) {
       if (lhs[i] != rhs[i]) {
         return lhs[i] < rhs[i] ? -1 : 1;
@@ -166,9 +165,11 @@ int strcoll(const char* lhs, const char* rhs) noexcept {
 constexpr const char* strchr(const char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
-    for (std::size_t i = 0; str[i] != '\0'; ++i) {
-      if (str[i] == ch) {
-        return &str[i];
+    if (str != nullptr) {
+      for (std::size_t i = 0; str[i] != '\0'; ++i) {
+        if (str[i] == ch) {
+          return &str[i];
+        }
       }
     }
 
@@ -181,9 +182,11 @@ constexpr const char* strchr(const char* str, int ch) noexcept {
 constexpr char* strchr(char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
-    for (std::size_t i = 0; str[i] != '\0'; ++i) {
-      if (str[i] == ch) {
-        return &str[i];
+    if (str != nullptr) {
+      for (std::size_t i = 0; str[i] != '\0'; ++i) {
+        if (str[i] == ch) {
+          return &str[i];
+        }
       }
     }
 
@@ -197,9 +200,11 @@ constexpr const char* strrchr(const char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     int p = -1;
-    for (std::size_t i = 0; str[i] != '\0'; ++i) {
-      if (str[i] == ch) {
-        p = i;
+    if (str != nullptr) {
+      for (std::size_t i = 0; str[i] != '\0'; ++i) {
+        if (str[i] == ch) {
+          p = i;
+        }
       }
     }
 
@@ -213,11 +218,14 @@ constexpr char* strrchr(char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     int p = -1;
-    for (std::size_t i = 0; str[i] != '\0'; ++i) {
-      if (str[i] == ch) {
-        p = i;
+    if (str != nullptr) {
+      for (std::size_t i = 0; str[i] != '\0'; ++i) {
+        if (str[i] == ch) {
+          p = i;
+        }
       }
     }
+
 
     return p != -1 ? &str[p] : nullptr;
   } else {
@@ -229,8 +237,10 @@ constexpr std::size_t strspn(const char* dest, const char* src) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     std::size_t i = 0;
-    while (dest[i] != '\0' && strchr(src, dest[i]) != nullptr) {
-      ++i;
+    if (dest != nullptr) {
+      while (dest[i] != '\0' && strchr(src, dest[i]) != nullptr) {
+        ++i;
+      }
     }
 
     return i;
@@ -243,8 +253,10 @@ constexpr std::size_t strcspn(const char* dest, const char* src) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     std::size_t i = 0;
-    while (dest[i] != '\0' && strchr(src, dest[i]) == nullptr) {
-      ++i;
+    if (dest != nullptr) {
+      while (dest[i] != '\0' && strchr(src, dest[i]) == nullptr) {
+        ++i;
+      }
     }
 
     return i;
@@ -256,9 +268,11 @@ constexpr std::size_t strcspn(const char* dest, const char* src) noexcept {
 constexpr const char* strpbrk(const char* dest, const char* breakset) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
-    for (std::size_t i = 0; dest[i] != '\0'; ++i) {
-      if (strchr(breakset, dest[i]) != nullptr) {
-        return &dest[i];
+    if (dest != nullptr && breakset != nullptr) {
+      for (std::size_t i = 0; dest[i] != '\0'; ++i) {
+        if (strchr(breakset, dest[i]) != nullptr) {
+          return &dest[i];
+        }
       }
     }
 
@@ -271,9 +285,11 @@ constexpr const char* strpbrk(const char* dest, const char* breakset) noexcept {
 constexpr char* strpbrk(char* dest, const char* breakset) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
-    for (std::size_t i = 0; dest[i] != '\0'; ++i) {
-      if (strchr(breakset, dest[i]) != nullptr) {
-        return &dest[i];
+    if (dest != nullptr && breakset != nullptr) {
+      for (std::size_t i = 0; dest[i] != '\0'; ++i) {
+        if (strchr(breakset, dest[i]) != nullptr) {
+          return &dest[i];
+        }
       }
     }
 
@@ -286,7 +302,7 @@ constexpr char* strpbrk(char* dest, const char* breakset) noexcept {
 constexpr const char* strstr(const char* str, const char* target) noexcept {
   if (detail::is_constant_evaluated()) {
     // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strstr.c
-    if (char c = *target++; c != '\0') {
+    if (char c = target != nullptr ? *target++ : '\0'; c != '\0' && str != nullptr) {
       std::size_t len = strlen(target);
       do {
         char sc = {};
@@ -308,7 +324,7 @@ constexpr const char* strstr(const char* str, const char* target) noexcept {
 constexpr char* strstr(char* str, const char* target) noexcept {
   if (detail::is_constant_evaluated()) {
     // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strstr.c
-    if (char c = *target++; c != '\0') {
+    if (char c = target != nullptr ? *target++ : '\0'; c != '\0' && str != nullptr) {
       std::size_t len = strlen(target);
       do {
         char sc = {};
