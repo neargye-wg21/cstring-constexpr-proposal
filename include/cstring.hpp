@@ -33,9 +33,9 @@ constexpr char* strcpy(char* dest, const char* src) noexcept {
     }
 
     return dest;
+  } else {
+    return std::strcpy(dest, src);
   }
-
-  return std::strcpy(dest, src);
 }
 
 constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept {
@@ -55,9 +55,9 @@ constexpr char* strncpy(char* dest, const char* src, std::size_t count) noexcept
     }
 
     return dest;
+  } else {
+    return std::strncpy(dest, src, count);
   }
-
-  return std::strncpy(dest, src, count);
 }
 
 constexpr char* strcat(char* dest, const char* src) noexcept {
@@ -71,9 +71,9 @@ constexpr char* strcat(char* dest, const char* src) noexcept {
     }
 
     return dest;
+  } else {
+    return std::strcat(dest, src);
   }
-
-  return std::strcat(dest, src);
 }
 
 constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept {
@@ -94,9 +94,9 @@ constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept
     }
 
     return dest;
+  } else {
+    return std::strncat(dest, src, count);
   }
-
-  return std::strncat(dest, src, count);
 }
 
 // constexpr work with a locale requires constexpr locale.
@@ -117,9 +117,9 @@ constexpr std::size_t strlen(const char* str) noexcept {
 #elif defined(__clang__) || defined(_MSC_VER)
     return __builtin_strlen(str);
 #endif
+  } else {
+    return std::strlen(str);
   }
-
-  return std::strlen(str);
 }
 
 constexpr int strcmp(const char* lhs, const char* rhs) noexcept {
@@ -145,9 +145,9 @@ constexpr int strcmp(const char* lhs, const char* rhs) noexcept {
     }
 
     return 0;
+  } else {
+    return std::strcmp(lhs, rhs);
   }
-
-  return std::strcmp(lhs, rhs);
 }
 
 constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexcept {
@@ -166,9 +166,9 @@ constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexc
 #elif defined(__clang__) || defined(_MSC_VER)
     return __builtin_memcmp(lhs, rhs, count);
 #endif
+  } else {
+    return std::strncmp(lhs, rhs, count);
   }
-
-  return std::strncmp(lhs, rhs, count);
 }
 
 // constexpr work with a locale requires constexpr locale.
@@ -179,63 +179,63 @@ int strcoll(const char* lhs, const char* rhs) noexcept {
 constexpr const char* strchr(const char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
-    for (std::size_t i = 0;; ++i) {
+    for (std::size_t i = 0; str[i] != '\0'; ++i) {
       if (str[i] == ch) {
         return &str[i];
-      } else if (str[i] == '\0') {
-        return nullptr;
       }
     }
-  }
 
-  return std::strchr(str, ch);
+    return nullptr;
+  } else {
+    return std::strchr(str, ch);
+  }
 }
 
 constexpr char* strchr(char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
-    for (std::size_t i = 0;; ++i) {
+    for (std::size_t i = 0; str[i] != '\0'; ++i) {
       if (str[i] == ch) {
         return &str[i];
-      } else if (str[i] == '\0') {
-        return nullptr;
       }
     }
-  }
 
-  return std::strchr(str, ch);
+    return nullptr;
+  } else {
+    return std::strchr(str, ch);
+  }
 }
 
 constexpr const char* strrchr(const char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     int p = -1;
-    for (std::size_t i = 0;; ++i) {
+    for (std::size_t i = 0; str[i] != '\0'; ++i) {
       if (str[i] == ch) {
         p = i;
-      } else if (str[i] == '\0') {
-        return p != -1 ? &str[p] : nullptr;
       }
     }
-  }
 
-  return std::strrchr(str, ch);
+    return p != -1 ? &str[p] : nullptr;
+  } else {
+    return std::strrchr(str, ch);
+  }
 }
 
 constexpr char* strrchr(char* str, int ch) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     int p = -1;
-    for (std::size_t i = 0;; ++i) {
+    for (std::size_t i = 0; str[i] != '\0'; ++i) {
       if (str[i] == ch) {
         p = i;
-      } else if (str[i] == '\0') {
-        return p != -1 ? &str[p] : nullptr;
       }
     }
-  }
 
-  return std::strrchr(str, ch);
+    return p != -1 ? &str[p] : nullptr;
+  } else {
+    return std::strrchr(str, ch);
+  }
 }
 
 constexpr std::size_t strspn(const char* dest, const char* src) noexcept {
@@ -247,9 +247,9 @@ constexpr std::size_t strspn(const char* dest, const char* src) noexcept {
     }
 
     return i;
+  } else {
+    return std::strspn(dest, src);
   }
-
-  return std::strspn(dest, src);
 }
 
 constexpr std::size_t strcspn(const char* dest, const char* src) noexcept {
@@ -261,9 +261,9 @@ constexpr std::size_t strcspn(const char* dest, const char* src) noexcept {
     }
 
     return i;
+  } else {
+    return std::strcspn(dest, src);
   }
-
-  return std::strcspn(dest, src);
 }
 
 constexpr const char* strpbrk(const char* dest, const char* breakset) noexcept {
@@ -276,24 +276,24 @@ constexpr const char* strpbrk(const char* dest, const char* breakset) noexcept {
     }
 
     return nullptr;
+  } else {
+    return std::strpbrk(dest, breakset);
   }
-
-  return std::strpbrk(dest, breakset);
 }
 
 constexpr char* strpbrk(char* dest, const char* breakset) noexcept {
   if (detail::is_constant_evaluated()) {
     // Naive implementation.
     for (std::size_t i = 0; dest[i] != '\0'; ++i) {
-      if (strchr(breakset, dest[i])) {
+      if (strchr(breakset, dest[i]) != nullptr) {
         return &dest[i];
       }
     }
 
     return nullptr;
+  } else {
+    return std::strpbrk(dest, breakset);
   }
-
-  return std::strpbrk(dest, breakset);
 }
 
 constexpr const char* strstr(const char* str, const char* target) noexcept {
@@ -313,9 +313,9 @@ constexpr const char* strstr(const char* str, const char* target) noexcept {
     }
 
     return str;
+  } else {
+    return std::strstr(str, target);
   }
-
-  return std::strstr(str, target);
 }
 
 constexpr char* strstr(char* str, const char* target) noexcept {
@@ -335,9 +335,9 @@ constexpr char* strstr(char* str, const char* target) noexcept {
     }
 
     return str;
+  } else {
+    return std::strstr(str, target);
   }
-
-  return std::strstr(str, target);
 }
 
 // Unlike most other tokenizers, the delimiters in strtok can be different for each subsequent token, and can even depend on the contents of the previous tokens.
@@ -356,9 +356,9 @@ constexpr const void* memchr(const void* ptr, int ch, std::size_t count) noexcep
 #elif defined(__clang__) || defined(_MSC_VER)
     return __builtin_memchr(ptr, ch, count);
 #endif
+  } else {
+    return std::memchr(ptr, ch, count);
   }
-
-  return std::memchr(ptr, ch, count);
 }
 
 constexpr void* memchr(void* ptr, int ch, std::size_t count) noexcept {
@@ -371,9 +371,9 @@ constexpr void* memchr(void* ptr, int ch, std::size_t count) noexcept {
 #elif defined(__clang__)
     return __builtin_memchr(ptr, ch, count);
 #endif
+  } else {
+    return std::memchr(ptr, ch, count);
   }
-
-  return std::memchr(ptr, ch, count);
 }
 
 constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexcept {
@@ -386,9 +386,9 @@ constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexce
 #elif defined(__clang__) || defined(_MSC_VER)
     return __builtin_memcmp(lhs, rhs, count);
 #endif
+  } else {
+    return std::memcmp(lhs, rhs, count);
   }
-
-  return std::memcmp(lhs, rhs, count);
 }
 
 constexpr void* memset(void* dest, int ch, std::size_t count) noexcept {
@@ -401,9 +401,9 @@ constexpr void* memset(void* dest, int ch, std::size_t count) noexcept {
 #elif defined(__clang__)
     return __builtin_memset(dest, ch, count);
 #endif
+  } else {
+    return std::memset(dest, ch, count);
   }
-
-  return std::memset(dest, ch, count);
 }
 
 constexpr void* memcpy(void* dest, const void* src, std::size_t count) noexcept {
@@ -416,9 +416,9 @@ constexpr void* memcpy(void* dest, const void* src, std::size_t count) noexcept 
 #elif defined(__clang__)
     return __builtin_memcpy(dest, src, count);
 #endif
+  } else {
+    return std::memcpy(dest, src, count);
   }
-
-  return std::memcpy(dest, src, count);
 }
 
 constexpr void* memmove(void* dest, const void* src, std::size_t count) noexcept {
@@ -431,9 +431,9 @@ constexpr void* memmove(void* dest, const void* src, std::size_t count) noexcept
 #elif defined(__clang__)
     return __builtin_memmove(dest, src, count);
 #endif
+  } else {
+    return std::memmove(dest, src, count);
   }
-
-  return std::memmove(dest, src, count);
 }
 
 // System error code non constexpr context.
