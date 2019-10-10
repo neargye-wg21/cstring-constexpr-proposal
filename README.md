@@ -9,7 +9,7 @@ This proposal is a pure library extension. It proposes changes to existing heade
 
 # Design Decisions
 
-## A. <cstring> must have constexpr additions
+## A. `<cstring>` must have constexpr additions
 
 All the functions from `<cstring>` header must be marked with constexpr, except the strcoll, strxfrm, strtok, strerror functions.
 
@@ -30,7 +30,7 @@ Unlike std::strtok, this function does not update static storage: it stores the 
 constexpr char* strtok(char* str, const char* delim, char** ptr);
 ```
 
-# D. <cwchar> must have constexpr additions
+# D. `<cwchar>` must have constexpr additions
 
 wcscpym, wcsncpy, wcscat, wcsncat, wcslen, wcscmp, wcsncmp, wcschr, wcsrchr, wcsspn, wcscspn, wcspbrk, wcsstr, wcstok, wmemcpy, wmemmove, wmemcmp, wmemchr, wmemset functions from `<cwchar>` header must be marked with constexpr.
 
