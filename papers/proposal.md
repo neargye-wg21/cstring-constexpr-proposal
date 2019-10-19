@@ -6,6 +6,16 @@ Antony Polukhin <antoshkka@gmail.com>
 
 # I. Introduction and Motivation
 
+Headers `<cstring>` and `<cwchar>` has is widely-used functions for string manipulation and in C++20 these functions not currently constexpr friendly.
+
+Consider the simple example:
+```cpp
+int main() {
+    constexpr char[] str = "abcd"; // OK
+    constexpr auto str_len = std::strlen(str); // Fail
+}
+```
+
 # II. Impact on the Standard
 This proposal is a pure library extension. It proposes changes to existing headers `<cstring>` and `<cwchar>` such that the changes do not break existing code and do not degrade performance. It does not require any changes in the core language in simple cases of non assembly optimized Standard Library, and it could be implemented in standard C++, except for the memchr, memcmp, memset, memcpy and memmove functions.
 
@@ -15,7 +25,12 @@ This proposal is a pure library extension. It proposes changes to existing heade
 
 All the functions from `<cstring>` header must be marked with constexpr, except the `strcoll`, `strxfrm`, `strtok`, `strerror` functions.
 
-For example `std::strlen`
+For example constexpr `std::strlen` helps make code constexpr friendly without breaking backward compatibility.
+```cpp
+    constexpr char[] str = "abcd";
+    constexpr auto str_len = std::strlen(str);
+    std::array<char, str_len> str_array;
+```
 
 `strcoll`, `strxfrm` locale non constexpr context.
 `strtok` each call to this function modifies a static variable, so can't be constexpr.

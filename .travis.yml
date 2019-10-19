@@ -1,5 +1,5 @@
 os: linux # Use linux unless specified otherwise.
-dist: trusty
+dist: xenial
 sudo: required
 
 language: cpp
@@ -23,10 +23,11 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty
+            - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main'
+              key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
           packages:
+            - g++-7
             - clang-9
-            - g++-9
       env:
         - CXX_COMPILER=clang++-9 CC_COMPILER=clang-9
 
