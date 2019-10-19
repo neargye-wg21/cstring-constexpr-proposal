@@ -249,20 +249,18 @@ TEST_CASE("wcstok") {
 
     wchar_t* buffer = nullptr;
     wchar_t* token1 = proposal::wcstok(input, L" ", &buffer);
-    (void)proposal::wcstok(input, L" ", &buffer);
-    wchar_t* token3 = proposal::wcstok(input, L" ", &buffer);
-    (void)proposal::wcstok(input, L" ", &buffer);
-    wchar_t* token5 = proposal::wcstok(input, L" ", &buffer);
+    (void)proposal::wcstok(nullptr, L" ", &buffer);
+    wchar_t* token3 = proposal::wcstok(nullptr, L" ", &buffer);
+    (void)proposal::wcstok(nullptr, L" ", &buffer);
+    wchar_t* token5 = proposal::wcstok(nullptr, L" ", &buffer);
 
-    return proposal::wcsncmp(str1, token1, proposal::wcslen(str1)) &&
-           proposal::wcsncmp(str3, token3, proposal::wcslen(str3)) &&
-           proposal::wcsncmp(str5, token5, proposal::wcslen(str5));
+    return proposal::wcsncmp(str1, token1, proposal::wcslen(str1)) == 0 &&
+           proposal::wcsncmp(str3, token3, proposal::wcslen(str3)) == 0 &&
+           proposal::wcsncmp(str5, token5, proposal::wcslen(str5)) == 0;
   };
 
   constexpr bool b = test_wcstok();
-  (void)b;
-  // TODO: This failed!
-  //static_assert(b);
+  static_assert(b);
 }
 
 TEST_CASE("wmemchr") {

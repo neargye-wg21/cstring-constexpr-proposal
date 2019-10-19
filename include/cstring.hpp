@@ -361,7 +361,7 @@ constexpr char* strtok(char* str, const char* delim, char** ptr) noexcept {
     return *ptr = nullptr;
   }
 
-  *ptr = str + strspn(str, delim);
+  *ptr = str + strcspn(str, delim);
   if (**ptr != '\0') {
     *(*ptr)++ = '\0';
   } else {

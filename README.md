@@ -20,8 +20,8 @@ All the functions from `<cstring>` header must be marked with constexpr, except 
 However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them constexpr will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
 
 Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_memset, __builtin_memcpy, __builtin_memmove:
-* https://github.com/llvm-mirror/clang/blob/master/test/SemaCXX/constexpr-string.cpp
-* https://rev.ng/gitlab/revng-bar-2019/clang/commit/0f097ac04fc21e27a382b6b896f52a12e0c02b97
+* https://reviews.llvm.org/rL338455
+* https://reviews.llvm.org/rL338941
 
 # C. Add strtok(char* str, const char* delim, char** ptr)
 

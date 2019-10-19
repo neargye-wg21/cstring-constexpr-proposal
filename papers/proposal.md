@@ -27,7 +27,7 @@ For example `std::strlen`
 
 However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them constexpr will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
 
-Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_memcpy, __builtin_memmove.
+Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_memcpy, __builtin_memmove <https://reviews.llvm.org/rL338941>.
 
 ## C. Add strtok(char* str, const char* delim, char** ptr)
 

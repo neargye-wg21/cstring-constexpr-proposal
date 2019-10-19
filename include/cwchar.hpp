@@ -13,7 +13,6 @@ namespace nstd {
 
 constexpr wchar_t* wcscpy(wchar_t* dest, const wchar_t* src) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strcpy.c
     if (dest != nullptr && src != nullptr) {
       wchar_t* d = dest;
       for (; (*d = *src) != L'\0'; ++d, ++src) {
@@ -28,7 +27,6 @@ constexpr wchar_t* wcscpy(wchar_t* dest, const wchar_t* src) noexcept {
 
 constexpr wchar_t* wcsncpy(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strncpy.c
     if (dest != nullptr && src != nullptr && count != 0) {
       wchar_t* d = dest;
       do {
@@ -49,7 +47,6 @@ constexpr wchar_t* wcsncpy(wchar_t* dest, const wchar_t* src, std::size_t count)
 
 constexpr wchar_t* wcscat(wchar_t* dest, const wchar_t* src) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strcat.c
     if (dest != nullptr && src != nullptr) {
       wchar_t* d = dest;
       for (; *d != L'\0'; ++d) {
@@ -66,7 +63,6 @@ constexpr wchar_t* wcscat(wchar_t* dest, const wchar_t* src) noexcept {
 
 constexpr wchar_t* wcsncat(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strncat.c
     if (dest != nullptr && src != nullptr && count != 0) {
       wchar_t* d = dest;
       for (; *d != L'\0'; ++d) {
@@ -94,7 +90,6 @@ std::size_t wcsxfrm(wchar_t* dest, const wchar_t* src, std::size_t count) noexce
 constexpr std::size_t wcslen(const wchar_t* str) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
-    // https://github.com/gcc-mirror/gcc/blob/5c7634a0e5f202935aa6c11b6ea953b8bf80a00a/libstdc%2B%2B-v3/include/bits/char_traits.h#L329
     std::size_t i = 0;
     if (str != nullptr) {
       while (str[i] != L'\0') {
@@ -113,7 +108,6 @@ constexpr std::size_t wcslen(const wchar_t* str) noexcept {
 
 constexpr int wcscmp(const wchar_t* lhs, const wchar_t* rhs) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strcmp.c
     if (lhs == nullptr || rhs == nullptr) {
       return rhs != nullptr ? -1 : 1;
     }
@@ -133,7 +127,6 @@ constexpr int wcscmp(const wchar_t* lhs, const wchar_t* rhs) noexcept {
 constexpr int wcsncmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
-    // https://github.com/gcc-mirror/gcc/blob/13b9cbfc32fe3ac4c81c4dd9c42d141c8fb95db4/libstdc%2B%2B-v3/include/bits/char_traits.h#L655
     if (lhs == nullptr || rhs == nullptr) {
       return rhs != nullptr ? -1 : 1;
     }
@@ -162,7 +155,6 @@ int wcscoll(const wchar_t* lhs, const wchar_t* rhs) noexcept {
 
 constexpr const wchar_t* wcschr(const wchar_t* str, wchar_t ch) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     if (str != nullptr) {
       for (std::size_t i = 0; str[i] != L'\0'; ++i) {
         if (str[i] == ch) {
@@ -179,7 +171,6 @@ constexpr const wchar_t* wcschr(const wchar_t* str, wchar_t ch) noexcept {
 
 constexpr wchar_t* wcschr(wchar_t* str, wchar_t ch) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     if (str != nullptr) {
       for (std::size_t i = 0; str[i] != L'\0'; ++i) {
         if (str[i] == ch) {
@@ -196,7 +187,6 @@ constexpr wchar_t* wcschr(wchar_t* str, wchar_t ch) noexcept {
 
 constexpr const wchar_t* wcsrchr(const wchar_t* str, wchar_t ch) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     int p = -1;
     if (str != nullptr) {
       for (std::size_t i = 0; str[i] != L'\0'; ++i) {
@@ -214,7 +204,6 @@ constexpr const wchar_t* wcsrchr(const wchar_t* str, wchar_t ch) noexcept {
 
 constexpr wchar_t* wcsrchr(wchar_t* str, wchar_t ch) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     int p = -1;
     if (str != nullptr) {
       for (std::size_t i = 0; str[i] != L'\0'; ++i) {
@@ -232,7 +221,6 @@ constexpr wchar_t* wcsrchr(wchar_t* str, wchar_t ch) noexcept {
 
 constexpr std::size_t wcsspn(const wchar_t* dest, const wchar_t* src) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     std::size_t i = 0;
     if (dest != nullptr) {
       while (dest[i] != L'\0' && wcsrchr(src, dest[i]) != nullptr) {
@@ -248,7 +236,6 @@ constexpr std::size_t wcsspn(const wchar_t* dest, const wchar_t* src) noexcept {
 
 constexpr std::size_t wcscspn(const wchar_t* dest, const wchar_t* src) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     std::size_t i = 0;
     if (dest != nullptr) {
       while (dest[i] != L'\0' && wcsrchr(src, dest[i]) == nullptr) {
@@ -264,7 +251,6 @@ constexpr std::size_t wcscspn(const wchar_t* dest, const wchar_t* src) noexcept 
 
 constexpr const wchar_t* wcspbrk(const wchar_t* dest, const wchar_t* breakset) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     if (dest != nullptr && breakset != nullptr) {
       for (std::size_t i = 0; dest[i] != L'\0'; ++i) {
         if (wcschr(breakset, dest[i]) != nullptr) {
@@ -281,7 +267,6 @@ constexpr const wchar_t* wcspbrk(const wchar_t* dest, const wchar_t* breakset) n
 
 constexpr wchar_t* wcspbrk(wchar_t* dest, const wchar_t* breakset) noexcept {
   if (detail::is_constant_evaluated()) {
-    // Naive implementation.
     if (dest != nullptr && breakset != nullptr) {
       for (std::size_t i = 0; dest[i] != L'\0'; ++i) {
         if (wcschr(breakset, dest[i]) != nullptr) {
@@ -298,7 +283,6 @@ constexpr wchar_t* wcspbrk(wchar_t* dest, const wchar_t* breakset) noexcept {
 
 constexpr const wchar_t* wcsstr(const wchar_t* str, const wchar_t* target) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strstr.c
     if (wchar_t c = target != nullptr ? *target++ : L'\0'; c != L'\0' && str != nullptr) {
       std::size_t len = wcslen(target);
       do {
@@ -320,7 +304,6 @@ constexpr const wchar_t* wcsstr(const wchar_t* str, const wchar_t* target) noexc
 
 constexpr wchar_t* wcsstr(wchar_t* str, const wchar_t* target) noexcept {
   if (detail::is_constant_evaluated()) {
-    // https://github.com/freebsd/freebsd/blob/master/sys/libkern/strstr.c
     if (wchar_t c = target != nullptr ? *target++ : L'\0'; c != L'\0' && str != nullptr) {
       std::size_t len = wcslen(target);
       do {
@@ -343,7 +326,6 @@ constexpr wchar_t* wcsstr(wchar_t* str, const wchar_t* target) noexcept {
 constexpr wchar_t* wcstok(wchar_t* str, const wchar_t* delim, wchar_t** ptr) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER) || defined(__clang__)
-    // Naive implementation.
     if (str == nullptr && (str = *ptr) == nullptr) {
       return nullptr;
     }
@@ -370,7 +352,6 @@ constexpr wchar_t* wcstok(wchar_t* str, const wchar_t* delim, wchar_t** ptr) noe
 constexpr wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
-    // Naive implementation.
     if (dest != nullptr && src != nullptr && count != 0) {
       for (std::size_t i = 0; i < count; ++i) {
         dest[i] = src[i];
@@ -389,7 +370,6 @@ constexpr wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, std::size_t count)
 constexpr wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
-    // Naive implementation.
     if (dest != nullptr && src != nullptr && count != 0) {
       wchar_t* d = dest;
       if (dest > src) {
@@ -417,7 +397,6 @@ constexpr wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, std::size_t count
 constexpr int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
-    // Naive implementation.
     if (lhs != nullptr && rhs != nullptr && count != 0) {
       for (std::size_t i = 0; i < count; ++i) {
         if (lhs[i] != rhs[i]) {
@@ -438,7 +417,6 @@ constexpr int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count)
 constexpr const wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
-    // Naive implementation.
     if (ptr != nullptr && count != 0) {
       for (std::size_t i = 0; i < count; ++i) {
         if (ptr[i] == ch) {
@@ -459,7 +437,6 @@ constexpr const wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, std::size_t cou
 constexpr wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
-    // Naive implementation.
     if (ptr != nullptr && count != 0) {
       for (std::size_t i = 0; i < count; ++i) {
         if (ptr[i] == ch) {
@@ -481,7 +458,6 @@ constexpr wchar_t* wmemset(wchar_t* dest, wchar_t ch, std::size_t count) noexcep
   if (detail::is_constant_evaluated()) {
   // clang no __builtin_memset ?
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER) || defined(__clang__)
-    // Naive implementation.
     if (dest != nullptr && count != 0) {
       for (std::size_t i = 0; i < count; ++i) {
         dest[i] = ch;

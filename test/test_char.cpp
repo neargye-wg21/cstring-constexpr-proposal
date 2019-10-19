@@ -240,6 +240,27 @@ TEST_CASE("const strstr") {
 }
 
 TEST_CASE("strtok") {
+  auto test_strtok = []() constexpr {
+    char input[100] = "A bird came down the walk";
+
+    char str1[] = "A";
+    char str3[] = "came";
+    char str5[] = "the";
+
+    char* buffer = nullptr;
+    char* token1 = proposal::strtok(input, " ", &buffer);
+    (void)proposal::strtok(nullptr, " ", &buffer);
+    char* token3 = proposal::strtok(nullptr, " ", &buffer);
+    (void)proposal::strtok(nullptr, " ", &buffer);
+    char* token5 = proposal::strtok(nullptr, " ", &buffer);
+
+    return proposal::strncmp(str1, token1, proposal::strlen(str1)) == 0 &&
+           proposal::strncmp(str3, token3, proposal::strlen(str3)) == 0 &&
+           proposal::strncmp(str5, token5, proposal::strlen(str5)) == 0;
+  };
+
+  constexpr bool b = test_strtok();
+  static_assert(b);
 }
 
 #if defined(__clang__)
