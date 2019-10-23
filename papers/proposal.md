@@ -1,12 +1,18 @@
-# Add Constexpr Modifiers to Functions in `<cstring>` and `<cwchar>` Headers
+Document number: P1944R0</br>
+Project: Programming Language C++</br>
+Audience: LEWGI, LEWG, LWG
 
 Daniil Goncharov <neargye@gmail.com>
 
 Antony Polukhin <antoshkka@gmail.com>
 
+Date: 2019-10-23
+
+# Add Constexpr Modifiers to Functions in `<cstring>` and `<cwchar>` Headers
+
 # I. Introduction and Motivation
 
-Headers `<cstring>` and `<cwchar>` has is widely-used functions for string manipulation and in C++20 these functions not currently constexpr friendly.
+Headers <cstring> and <cwchar> have popular functions for string manipulation. In C++20 those functions are not constexpr. The paper proposes to make some of the functions usable in constexpr context.
 
 Consider the simple example:
 ```cpp
@@ -25,16 +31,7 @@ This proposal is a pure library extension. It proposes changes to existing heade
 
 All the functions from `<cstring>` header must be marked with constexpr, except the `strcoll`, `strxfrm`, `strtok`, `strerror` functions.
 
-For example constexpr `std::strlen` helps make code constexpr friendly without breaking backward compatibility.
-```cpp
-    constexpr char[] str = "abcd";
-    constexpr auto str_len = std::strlen(str);
-    std::array<char, str_len> str_array;
-```
-
-`strcoll`, `strxfrm` locale non constexpr context.
-`strtok` each call to this function modifies a static variable, so can't be constexpr.
-`strerror` system error code non constexpr context.
+`strcoll` , `strxfrm` use locale that is non usable in constexpr context. `strtok` touches a static or global variable. `strerror` touches a thread local buffer ad also can not be made constexpr.
 
 ## B. std::memchr, std::memcmp, std::memchr, std::memset, std::memcpy, std::memmove must have constexpr additions
 
@@ -44,25 +41,21 @@ However those functions are not only popular, but also are widely used across St
 
 Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_memcpy, __builtin_memmove <https://reviews.llvm.org/rL338941>.
 
+Note that std::bit_cast and std::is_constant_evaluated() could be used to implement those functions in pure C++ (in theory).
+
 ## C. Add strtok(char* str, const char* delim, char** ptr)
 
 Unlike `strtok(char* str, const char* delim)`, this function does not update static storage: it stores the parser state in the user-provided location, so it's can be using in constexpr.
+
+This function is analogous to the existing `std::wcstok` function, but works with char.
 
 ```cpp
 constexpr char* strtok(char* str, const char* delim, char** ptr);
 ```
 
-## D. Functions string manipulation, string examination and wide character array manipulation from `<cwchar>` must have constexpr additions
+## D. Apply the constexpr to the analogs in <cwchar>
 
-Multibyte string manipulation functions must have constexpr additions:
-`wcscpym`, `wcsncpy`, `wcscat`, `wcsncat` functions must be marked with constexpr.
-
-Multibyte string examination functions must have constexpr additions:
-`wcslen`, `wcscmp`, `wcsncmp,` `wcschr`, `wcsrchr`, `wcsspn`, `wcscspn`, `wcspbrk`, `wcsstr`, `wcstok` functions must be marked with constexpr.
-
-Wide character array manipulation functions must have constexpr additions: `wmemcpy`, `wmemmove`, `wmemcmp`, `wmemchr`, `wmemset` functions must be marked with constexpr.
-
-As well as similar functions from `<cstrings>` for char, these functions from `<cwchar>` useful when working with wchar_t in constexpr.
+As well as similar functions from <cstrings> for char, these functions from <cwchar> useful when working with wchar_t in constexpr. Note that we do not propose to constexprify the functons that touch global state or work with locales.
 
 # IV. Proposed wording
 
@@ -167,6 +160,10 @@ All the additions to the Standard are marked with <font color='green'>underlined
 <font color='green'>constexpr</font> wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count);
 
 <font color='green'>constexpr</font> wchar_t* wmemset(wchar_t* dest, wchar_t ch, std::size_t count);
+
+## C. Modify [support.limits.general]/3
+
+#define __cpp_lib_constexpr ~~201811L~~ <font color='green'>_DATE OF ADOPTION_</font>
 
 # V. Revision History
 
