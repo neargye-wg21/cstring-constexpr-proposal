@@ -1,5 +1,5 @@
-Document number: P1944R0</br>
-Project: Programming Language C++</br>
+Document number: P1944R0  
+Project: Programming Language C++  
 Audience: LEWGI, LEWG, LWG
 
 Daniil Goncharov <neargye@gmail.com>
@@ -8,17 +8,18 @@ Antony Polukhin <antoshkka@gmail.com>
 
 Date: 2019-10-24
 
-# Add Constexpr Modifiers to Functions in _\<cstring>_ and _\<cwchar>_ Headers
+# Add Constexpr Modifiers to Functions in \<cstring> and \<cwchar> Headers
 
 # I. Introduction and Motivation
 
 Headers `<cstring>` and `<cwchar>` have popular functions for string manipulation. In C++20 those functions are not `constexpr`. The paper proposes to make some of the functions usable in constexpr context.
 
 Consider the simple example:
+
 ```cpp
-int main() {
-    constexpr char[] str = "abcd"; // OK
-    constexpr auto str_len = std::strlen(str); // Fail
+int main() {  
+    constexpr char[] str = "abcd"; // OK  
+    constexpr auto str_len = std::strlen(str); // Fail  
 }
 ```
 
@@ -171,5 +172,5 @@ Revision 0:
 * Initial proposal
 
 # VI. References:
-* [neargye] Proof of concept for _\<cstring>_ and _\<cwchar>_ functions <https://github.com/Neargye/cstring-constexpr-proposal>.
-* [P0202R0] A Proposal to Add Constexpr Modifiers to Functions in _\<cwchar>_ and _\<cstring>_ Headers <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html>.
+* [neargye] Proof of concept for \<cstring> and \<cwchar> functions <https://github.com/Neargye/cstring-constexpr-proposal>.
+* [P0202R0] A Proposal to Add Constexpr Modifiers to Functions in \<cwchar> and \<cstring> Headers <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html>.
