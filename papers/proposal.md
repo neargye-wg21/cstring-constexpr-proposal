@@ -12,7 +12,7 @@ Date: 2019-10-24
 
 # I. Introduction and Motivation
 
-Headers <cstring> and <cwchar> have popular functions for string manipulation. In C++20 those functions are not constexpr. The paper proposes to make some of the functions usable in constexpr context.
+Headers `<cstring>` and `<cwchar>` have popular functions for string manipulation. In C++20 those functions are not `constexpr`. The paper proposes to make some of the functions usable in constexpr context.
 
 Consider the simple example:
 ```cpp
@@ -27,25 +27,25 @@ This proposal is a pure library extension. It proposes changes to existing heade
 
 # III. Design Decisions
 
-## A. `<cstring>` must have constexpr additions
+## A. `<cstring>` must have `constexpr` additions
 
-All the functions from `<cstring>` header must be marked with constexpr, except the `strcoll`, `strxfrm`, `strtok`, `strerror` functions.
+All the functions from `<cstring>` header must be marked with `constexpr`, except the `strcoll`, `strxfrm`, `strtok`, `strerror` functions.
 
-`strcoll`, `strxfrm` use locale that is non usable in constexpr context. `strtok` touches a static or global variable. `strerror` touches a thread local buffer and also can not be made constexpr.
+`strcoll`, `strxfrm` use locale that is non usable in `constexpr` context. `strtok` touches a static or global variable. `strerror` touches a thread local buffer and also can not be made `constexpr`.
 
-## B. std::memchr, std::memcmp, std::memchr, std::memset, std::memcpy, std::memmove must have constexpr additions
+## B. `std::memchr`, `std::memcmp`, `std::memchr`, `std::memset`, `std::memcpy`, `std::memmove` must have `constexpr` additions
 
-`std::memchr`, `std::memcmp`, `std::memchr`, `std::memset`, `std::memcpy`, `std::memmove` accept `void*` and `const void*` parameters. This makes them impossible to implement in pure C++ as constexpr, because constant expressions can not evaluate a conversion from type cv `void *` to a pointer-to-object type according to [expr.const].
+`std::memchr`, `std::memcmp`, `std::memchr`, `std::memset`, `std::memcpy`, `std::memmove` accept `void*` and `const void*` parameters. This makes them impossible to implement in pure C++ as `constexpr`, because constant expressions can not evaluate a conversion from type cv `void *` to a pointer-to-object type according to [expr.const].
 
-However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them constexpr will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
+However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them `constexpr` will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
 
-Clang already support constexpr __builtin_memchr, __builtin_memcmp, __builtin_memcpy, __builtin_memmove <https://reviews.llvm.org/rL338941>.
+Clang already support `constexpr` __builtin_memchr, __builtin_memcmp, __builtin_memcpy, __builtin_memmove <https://reviews.llvm.org/rL338941>.
 
 Note that std::bit_cast and std::is_constant_evaluated() could be used to implement those functions in pure C++ (in theory).
 
-## C. Add strtok(char* str, const char* delim, char** ptr)
+## C. Add `strtok(char* str, const char* delim, char** ptr)`
 
-Unlike `strtok(char* str, const char* delim)`, this function does not update static storage: it stores the parser state in the user-provided location, so it can be constexpr.
+Unlike `strtok(char* str, const char* delim)`, this function does not update static storage: it stores the parser state in the user-provided location, so it can be `constexpr`.
 
 This function is analogous to the existing `std::wcstok` function, but works with char.
 
@@ -53,9 +53,9 @@ This function is analogous to the existing `std::wcstok` function, but works wit
 constexpr char* strtok(char* str, const char* delim, char** ptr);
 ```
 
-## D. Apply the constexpr to the analogs in <cwchar>
+## D. Apply the `constexpr` to the analogs in <cwchar>
 
-As well as similar functions from <cstrings> for char, these functions from <cwchar> are useful when working with wchar_t in constexpr. Note that we do not propose to constexprify the functons that touch global state or work with locales.
+As well as similar functions from `<cstrings>` for char, these functions from `<cwchar>` are useful when working with wchar_t in `constexpr`. Note that we do not propose to constexprify the functons that touch global state or work with locales.
 
 # IV. Proposed wording
 
