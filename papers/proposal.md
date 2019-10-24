@@ -6,7 +6,7 @@ Daniil Goncharov <neargye@gmail.com>
 
 Antony Polukhin <antoshkka@gmail.com>
 
-Date: 2019-10-23
+Date: 2019-10-24
 
 # Add Constexpr Modifiers to Functions in `<cstring>` and `<cwchar>` Headers
 
@@ -31,7 +31,7 @@ This proposal is a pure library extension. It proposes changes to existing heade
 
 All the functions from `<cstring>` header must be marked with constexpr, except the `strcoll`, `strxfrm`, `strtok`, `strerror` functions.
 
-`strcoll` , `strxfrm` use locale that is non usable in constexpr context. `strtok` touches a static or global variable. `strerror` touches a thread local buffer ad also can not be made constexpr.
+`strcoll`, `strxfrm` use locale that is non usable in constexpr context. `strtok` touches a static or global variable. `strerror` touches a thread local buffer and also can not be made constexpr.
 
 ## B. std::memchr, std::memcmp, std::memchr, std::memset, std::memcpy, std::memmove must have constexpr additions
 
@@ -45,7 +45,7 @@ Note that std::bit_cast and std::is_constant_evaluated() could be used to implem
 
 ## C. Add strtok(char* str, const char* delim, char** ptr)
 
-Unlike `strtok(char* str, const char* delim)`, this function does not update static storage: it stores the parser state in the user-provided location, so it's can be using in constexpr.
+Unlike `strtok(char* str, const char* delim)`, this function does not update static storage: it stores the parser state in the user-provided location, so it can be constexpr.
 
 This function is analogous to the existing `std::wcstok` function, but works with char.
 
@@ -55,7 +55,7 @@ constexpr char* strtok(char* str, const char* delim, char** ptr);
 
 ## D. Apply the constexpr to the analogs in <cwchar>
 
-As well as similar functions from <cstrings> for char, these functions from <cwchar> useful when working with wchar_t in constexpr. Note that we do not propose to constexprify the functons that touch global state or work with locales.
+As well as similar functions from <cstrings> for char, these functions from <cwchar> are useful when working with wchar_t in constexpr. Note that we do not propose to constexprify the functons that touch global state or work with locales.
 
 # IV. Proposed wording
 
