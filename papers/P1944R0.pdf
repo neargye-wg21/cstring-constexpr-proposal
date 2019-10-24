@@ -1,0 +1,679 @@
+%PDF-1.3
+1 0 obj
+<< /Type /Catalog
+/Outlines 2 0 R
+/Pages 3 0 R >>
+endobj
+2 0 obj
+<< /Type /Outlines /Count 0 >>
+endobj
+3 0 obj
+<< /Type /Pages
+/Kids [6 0 R
+16 0 R
+20 0 R
+22 0 R
+]
+/Count 4
+/Resources <<
+/ProcSet 4 0 R
+/Font << 
+/F1 8 0 R
+/F2 9 0 R
+/F3 10 0 R
+/F4 11 0 R
+>>
+>>
+/MediaBox [0.000 0.000 595.280 841.890]
+ >>
+endobj
+4 0 obj
+[/PDF /Text ]
+endobj
+5 0 obj
+<<
+/Creator (DOMPDF)
+/CreationDate (D:20191024162704+00'00')
+/ModDate (D:20191024162704+00'00')
+>>
+endobj
+6 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Annots [ 12 0 R 14 0 R ]
+/Contents 7 0 R
+>>
+endobj
+7 0 obj
+<<
+/Length 4663 >>
+stream
+
+0.000 0.000 0.000 rg
+BT 34.016 784.354 Td /F1 12.0 Tf  [(Document number: P1944R0)] TJ ET
+BT 34.016 769.954 Td /F1 12.0 Tf  [(Project: Programming Language C++)] TJ ET
+BT 34.016 755.669 Td /F1 12.0 Tf  [(Audience: LEWGI, LEWG, LWG)] TJ ET
+BT 34.016 729.413 Td /F1 12.0 Tf  [(Daniil Goncharov )] TJ ET
+0.000 0.000 0.800 rg
+BT 123.332 729.413 Td /F1 12.0 Tf  [(neargye@gmail.com)] TJ ET
+0.000 0.000 0.800 RG
+0.6 w 0 J [  ] 0 d
+123.332 726.713 m 223.364 726.713 l S
+0.000 0.000 0.000 rg
+BT 34.016 703.157 Td /F1 12.0 Tf  [(Antony Polukhin )] TJ ET
+0.000 0.000 0.800 rg
+BT 119.360 703.157 Td /F1 12.0 Tf  [(antoshkka@gmail.com)] TJ ET
+0.6 w 0 J [  ] 0 d
+119.360 700.457 m 230.072 700.457 l S
+0.000 0.000 0.000 rg
+BT 34.016 676.901 Td /F1 12.0 Tf  [(Date: 2019-10-24)] TJ ET
+BT 34.016 635.161 Td /F2 24.0 Tf  [(Add Constexpr Modifiers to Functions in )] TJ ET
+BT 34.016 606.649 Td /F2 24.0 Tf  [(<cstring> and <cwchar> Headers)] TJ ET
+BT 34.016 562.057 Td /F2 24.0 Tf  [(I. Introduction and Motivation)] TJ ET
+BT 34.016 528.869 Td /F1 12.0 Tf  [(Headers )] TJ ET
+BT 76.328 528.869 Td /F3 12.0 Tf  [(<cstring>)] TJ ET
+BT 141.128 528.869 Td /F1 12.0 Tf  [( and )] TJ ET
+BT 164.456 528.869 Td /F3 12.0 Tf  [(<cwchar>)] TJ ET
+BT 222.056 528.869 Td /F1 12.0 Tf  [( have popular functions for string manipulation. In C++20 those )] TJ ET
+BT 34.016 514.613 Td /F1 12.0 Tf  [(functions are not )] TJ ET
+BT 117.668 514.613 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 182.468 514.613 Td /F1 12.0 Tf  [(. The paper proposes to make some of the functions usable in constexpr )] TJ ET
+BT 34.016 500.357 Td /F1 12.0 Tf  [(context.)] TJ ET
+BT 34.016 474.101 Td /F1 12.0 Tf  [(Consider the simple example:)] TJ ET
+BT 34.016 449.290 Td /F3 12.0 Tf  [(int main\(\) {)] TJ ET
+BT 34.016 436.840 Td /F3 12.0 Tf  [(    constexpr char[] str = "abcd"; // OK)] TJ ET
+BT 34.016 424.390 Td /F3 12.0 Tf  [(    constexpr auto str_len = std::strlen\(str\); // Fail)] TJ ET
+BT 34.016 411.939 Td /F3 12.0 Tf  [(})] TJ ET
+BT 34.016 370.560 Td /F2 24.0 Tf  [(II. Impact on the Standard)] TJ ET
+BT 34.016 337.372 Td /F1 12.0 Tf  [(This proposal is a pure library extension. It proposes changes to existing headers )] TJ ET
+BT 423.956 337.372 Td /F3 12.0 Tf  [(<cstring>)] TJ ET
+BT 488.756 337.372 Td /F1 12.0 Tf  [( and )] TJ ET
+BT 34.016 323.116 Td /F3 12.0 Tf  [(<cwchar>)] TJ ET
+BT 91.616 323.116 Td /F1 12.0 Tf  [( such that the changes do not break existing code and do not degrade performance. It does not )] TJ ET
+BT 34.016 308.860 Td /F1 12.0 Tf  [(require any changes in the core language in simple cases of non assembly optimized Standard Library, and it )] TJ ET
+BT 34.016 294.604 Td /F1 12.0 Tf  [(could be implemented in standard C++, except for the memchr, memcmp, memset, memcpy and memmove )] TJ ET
+BT 34.016 280.348 Td /F1 12.0 Tf  [(functions.)] TJ ET
+BT 34.016 238.608 Td /F2 24.0 Tf  [(III. Design Decisions)] TJ ET
+BT 34.016 199.718 Td /F2 18.0 Tf  [(A. )] TJ ET
+BT 56.012 199.718 Td /F4 18.0 Tf  [(<cstring>)] TJ ET
+BT 153.212 199.718 Td /F2 18.0 Tf  [( must have )] TJ ET
+BT 240.710 199.718 Td /F4 18.0 Tf  [(constexpr)] TJ ET
+BT 337.910 199.718 Td /F2 18.0 Tf  [( additions)] TJ ET
+BT 34.016 169.096 Td /F1 12.0 Tf  [(All the functions from )] TJ ET
+BT 144.008 169.096 Td /F3 12.0 Tf  [(<cstring>)] TJ ET
+BT 208.808 169.096 Td /F1 12.0 Tf  [( header must be marked with )] TJ ET
+BT 350.780 169.096 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 415.580 169.096 Td /F1 12.0 Tf  [(, except the )] TJ ET
+BT 473.564 169.096 Td /F3 12.0 Tf  [(strcoll)] TJ ET
+BT 523.964 169.096 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 34.016 154.840 Td /F3 12.0 Tf  [(strxfrm)] TJ ET
+BT 84.416 154.840 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 90.416 154.840 Td /F3 12.0 Tf  [(strtok)] TJ ET
+BT 133.616 154.840 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 139.616 154.840 Td /F3 12.0 Tf  [(strerror)] TJ ET
+BT 197.216 154.840 Td /F1 12.0 Tf  [( functions.)] TJ ET
+BT 34.016 128.584 Td /F3 12.0 Tf  [(strcoll)] TJ ET
+BT 84.416 128.584 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 90.416 128.584 Td /F3 12.0 Tf  [(strxfrm)] TJ ET
+BT 140.816 128.584 Td /F1 12.0 Tf  [( use locale that is non usable in )] TJ ET
+BT 293.468 128.584 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 358.268 128.584 Td /F1 12.0 Tf  [( context. )] TJ ET
+BT 402.596 128.584 Td /F3 12.0 Tf  [(strtok)] TJ ET
+BT 445.796 128.584 Td /F1 12.0 Tf  [( touches a static or )] TJ ET
+BT 34.016 114.328 Td /F1 12.0 Tf  [(global variable. )] TJ ET
+BT 111.668 114.328 Td /F3 12.0 Tf  [(strerror)] TJ ET
+BT 169.268 114.328 Td /F1 12.0 Tf  [( touches a thread local buffer and also can not be made )] TJ ET
+BT 435.860 114.328 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 500.660 114.328 Td /F1 12.0 Tf  [(.)] TJ ET
+endstream
+endobj
+8 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Times-Roman
+/Encoding /WinAnsiEncoding
+>>
+endobj
+9 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F2
+/BaseFont /Times-Bold
+/Encoding /WinAnsiEncoding
+>>
+endobj
+10 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F3
+/BaseFont /Courier
+/Encoding /WinAnsiEncoding
+>>
+endobj
+11 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F4
+/BaseFont /Courier-Bold
+/Encoding /WinAnsiEncoding
+>>
+endobj
+12 0 obj
+<< /Type /Annot
+/Subtype /Link
+/A 13 0 R
+/Border [0 0 0]
+/H /I
+/Rect [ 123.3317 728.3335 223.3637 740.2135 ]
+>>
+endobj
+13 0 obj
+<< /Type /Action
+/S /URI
+/URI (mailto:neargye@gmail.com)
+>>
+endobj
+14 0 obj
+<< /Type /Annot
+/Subtype /Link
+/A 15 0 R
+/Border [0 0 0]
+/H /I
+/Rect [ 119.3597 702.0775 230.0717 713.9575 ]
+>>
+endobj
+15 0 obj
+<< /Type /Action
+/S /URI
+/URI (mailto:antoshkka@gmail.com)
+>>
+endobj
+16 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Annots [ 18 0 R ]
+/Contents 17 0 R
+>>
+endobj
+17 0 obj
+<<
+/Length 6347 >>
+stream
+
+0.000 0.000 0.000 rg
+0.000 0.000 0.800 RG
+0.6 w 0 J [  ] 0 d
+BT 34.016 775.827 Td /F2 18.0 Tf  [(B. )] TJ ET
+BT 55.022 775.827 Td /F4 18.0 Tf  [(std::memchr)] TJ ET
+BT 173.822 775.827 Td /F2 18.0 Tf  [(, )] TJ ET
+BT 182.822 775.827 Td /F4 18.0 Tf  [(std::memcmp)] TJ ET
+BT 301.622 775.827 Td /F2 18.0 Tf  [(, )] TJ ET
+BT 310.622 775.827 Td /F4 18.0 Tf  [(std::memchr)] TJ ET
+BT 429.422 775.827 Td /F2 18.0 Tf  [(, )] TJ ET
+BT 438.422 775.827 Td /F4 18.0 Tf  [(std::memset)] TJ ET
+BT 34.016 754.443 Td /F2 18.0 Tf  [(, )] TJ ET
+BT 43.016 754.443 Td /F4 18.0 Tf  [(std::memcpy)] TJ ET
+BT 161.816 754.443 Td /F2 18.0 Tf  [(, )] TJ ET
+BT 170.816 754.443 Td /F4 18.0 Tf  [(std::memmove)] TJ ET
+BT 300.416 754.443 Td /F2 18.0 Tf  [( must have )] TJ ET
+BT 387.914 754.443 Td /F4 18.0 Tf  [(constexpr)] TJ ET
+BT 485.114 754.443 Td /F2 18.0 Tf  [( additions)] TJ ET
+BT 34.016 723.821 Td /F3 12.0 Tf  [(std::memchr)] TJ ET
+BT 113.216 723.821 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 119.216 723.821 Td /F3 12.0 Tf  [(std::memcmp)] TJ ET
+BT 198.416 723.821 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 204.416 723.821 Td /F3 12.0 Tf  [(std::memchr)] TJ ET
+BT 283.616 723.821 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 289.616 723.821 Td /F3 12.0 Tf  [(std::memset)] TJ ET
+BT 368.816 723.821 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 374.816 723.821 Td /F3 12.0 Tf  [(std::memcpy)] TJ ET
+BT 454.016 723.821 Td /F1 12.0 Tf  [(, )] TJ ET
+BT 460.016 723.821 Td /F3 12.0 Tf  [(std::memmove)] TJ ET
+BT 34.016 709.565 Td /F1 12.0 Tf  [(accept )] TJ ET
+BT 67.664 709.565 Td /F3 12.0 Tf  [(void*)] TJ ET
+BT 103.664 709.565 Td /F1 12.0 Tf  [( and )] TJ ET
+BT 126.992 709.565 Td /F3 12.0 Tf  [(const void*)] TJ ET
+BT 206.192 709.565 Td /F1 12.0 Tf  [( parameters. This makes them impossible to implement in pure C++ as )] TJ ET
+BT 34.016 695.309 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 98.816 695.309 Td /F1 12.0 Tf  [(, because constant expressions can not evaluate a conversion from type cv )] TJ ET
+BT 457.064 695.309 Td /F3 12.0 Tf  [(void *)] TJ ET
+BT 500.264 695.309 Td /F1 12.0 Tf  [( to a )] TJ ET
+BT 34.016 681.053 Td /F1 12.0 Tf  [(pointer-to-object type according to [expr.const].)] TJ ET
+BT 34.016 654.797 Td /F1 12.0 Tf  [(However those functions are not only popular, but also are widely used across Standard Library to gain )] TJ ET
+BT 34.016 640.541 Td /F1 12.0 Tf  [(better performance. Not making them )] TJ ET
+BT 217.976 640.541 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 282.776 640.541 Td /F1 12.0 Tf  [( will force standard Library developer to have compiler )] TJ ET
+BT 34.016 626.285 Td /F1 12.0 Tf  [(intrinsics for them anyway. This is a hard step that must be done.)] TJ ET
+BT 34.016 600.029 Td /F1 12.0 Tf  [(Clang already support )] TJ ET
+BT 143.000 600.029 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 207.800 600.029 Td /F1 12.0 Tf  [( __builtin_memchr, __builtin_memcmp, __builtin_memcpy, )] TJ ET
+BT 34.016 585.773 Td /F1 12.0 Tf  [(__builtin_memmove )] TJ ET
+0.000 0.000 0.800 rg
+BT 137.024 585.773 Td /F1 12.0 Tf  [(https://reviews.llvm.org/rL338941)] TJ ET
+0.6 w 0 J [  ] 0 d
+137.024 583.073 m 302.360 583.073 l S
+0.000 0.000 0.000 rg
+BT 302.360 585.773 Td /F1 12.0 Tf  [(.)] TJ ET
+BT 34.016 559.517 Td /F1 12.0 Tf  [(Note that std::bit_cast and std::is_constant_evaluated\(\) could be used to implement those functions in pure )] TJ ET
+BT 34.016 545.261 Td /F1 12.0 Tf  [(C++ \(in theory\).)] TJ ET
+BT 34.016 510.363 Td /F2 18.0 Tf  [(C. Add )] TJ ET
+BT 93.524 510.363 Td /F4 18.0 Tf  [(strtok\(char* str, const char* delim, )] TJ ET
+BT 34.016 491.146 Td /F4 18.0 Tf  [(char** ptr\))] TJ ET
+BT 34.016 461.066 Td /F1 12.0 Tf  [(Unlike )] TJ ET
+BT 69.680 461.066 Td /F3 12.0 Tf  [(strtok\(char* str, const char* delim\))] TJ ET
+BT 328.880 461.066 Td /F1 12.0 Tf  [(, this function does not update static storage: it )] TJ ET
+BT 34.016 446.810 Td /F1 12.0 Tf  [(stores the parser state in the user-provided location, so it can be )] TJ ET
+BT 341.624 446.810 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 406.424 446.810 Td /F1 12.0 Tf  [(.)] TJ ET
+BT 34.016 420.554 Td /F1 12.0 Tf  [(This function is analogous to the existing )] TJ ET
+BT 235.016 420.554 Td /F3 12.0 Tf  [(std::wcstok)] TJ ET
+BT 314.216 420.554 Td /F1 12.0 Tf  [( function, but works with char.)] TJ ET
+BT 34.016 395.743 Td /F3 12.0 Tf  [(constexpr char* strtok\(char* str, const char* delim, char** ptr\);)] TJ ET
+BT 34.016 361.205 Td /F2 18.0 Tf  [(D. Apply the )] TJ ET
+BT 136.022 361.205 Td /F4 18.0 Tf  [(constexpr)] TJ ET
+BT 233.222 361.205 Td /F2 18.0 Tf  [( to the analogs in )] TJ ET
+BT 34.016 330.584 Td /F1 12.0 Tf  [(As well as similar functions from )] TJ ET
+BT 197.336 330.584 Td /F3 12.0 Tf  [(<cstrings>)] TJ ET
+BT 269.336 330.584 Td /F1 12.0 Tf  [( for char, these functions from )] TJ ET
+BT 417.632 330.584 Td /F3 12.0 Tf  [(<cwchar>)] TJ ET
+BT 475.232 330.584 Td /F1 12.0 Tf  [( are useful when )] TJ ET
+BT 34.016 316.328 Td /F1 12.0 Tf  [(working with wchar_t in )] TJ ET
+BT 155.336 316.328 Td /F3 12.0 Tf  [(constexpr)] TJ ET
+BT 220.136 316.328 Td /F1 12.0 Tf  [(. Note that we do not propose to constexprify the functons that touch )] TJ ET
+BT 34.016 302.072 Td /F1 12.0 Tf  [(global state or work with locales.)] TJ ET
+BT 34.016 260.331 Td /F2 24.0 Tf  [(IV. Proposed wording)] TJ ET
+BT 34.016 227.144 Td /F1 12.0 Tf  [(All the additions to the Standard are marked with )] TJ ET
+0.000 0.502 0.000 rg
+BT 273.656 227.144 Td /F1 12.0 Tf  [(underlined green)] TJ ET
+0.000 0.000 0.000 rg
+BT 354.632 227.144 Td /F1 12.0 Tf  [(.)] TJ ET
+BT 34.016 192.245 Td /F2 18.0 Tf  [(A. Modifications to )] TJ ET
+BT 186.008 192.245 Td /F2 18.0 Tf  [(")] TJ ET
+BT 195.998 192.245 Td /F2 18.0 Tf  [(21.8 Null-terminated sequence utilities)] TJ ET
+BT 490.982 192.245 Td /F2 18.0 Tf  [(")] TJ ET
+BT 34.016 170.861 Td /F2 18.0 Tf  [([c.strings])] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 140.240 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 140.240 Td /F1 12.0 Tf  [( char* strcpy\(char* dest, const char* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 113.984 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 113.984 Td /F1 12.0 Tf  [( char* strncpy\(char* dest, const char* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 87.728 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 87.728 Td /F1 12.0 Tf  [( char* strcat\(char* dest, const char* src\);)] TJ ET
+endstream
+endobj
+18 0 obj
+<< /Type /Annot
+/Subtype /Link
+/A 19 0 R
+/Border [0 0 0]
+/H /I
+/Rect [ 137.0237 584.6935 302.3597 596.5735 ]
+>>
+endobj
+19 0 obj
+<< /Type /Action
+/S /URI
+/URI (https://reviews.llvm.org/rL338941)
+>>
+endobj
+20 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Contents 21 0 R
+>>
+endobj
+21 0 obj
+<<
+/Length 5382 >>
+stream
+
+0.000 0.000 0.000 rg
+0.000 0.000 0.800 RG
+0.6 w 0 J [  ] 0 d
+0.000 0.502 0.000 rg
+BT 34.016 784.469 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 784.469 Td /F1 12.0 Tf  [( char* strncat\(char* dest, const char* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 758.213 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 758.213 Td /F1 12.0 Tf  [( std::size_t strlen\(const char* str\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 731.957 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 731.957 Td /F1 12.0 Tf  [( int strcmp\(const char* lhs, const char* rhs\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 705.701 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 705.701 Td /F1 12.0 Tf  [( int strncmp\(const char* lhs, const char* rhs, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 679.445 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 679.445 Td /F1 12.0 Tf  [( const char* strchr\(const char* str, int ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 653.189 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 653.189 Td /F1 12.0 Tf  [( char* strchr\(char* str, int ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 626.933 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 626.933 Td /F1 12.0 Tf  [( const char* strrchr\(const char* str, int ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 600.677 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 600.677 Td /F1 12.0 Tf  [( char* strrchr\(char* str, int ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 574.421 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 574.421 Td /F1 12.0 Tf  [( std::size_t strspn\(const char* dest, const char* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 548.165 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 548.165 Td /F1 12.0 Tf  [( std::size_t strcspn\(const char* dest, const char* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 521.909 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 521.909 Td /F1 12.0 Tf  [( const char* strpbrk\(const char* dest, const char* breakset\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 495.653 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 495.653 Td /F1 12.0 Tf  [( char* strpbrk\(char* dest, const char* breakset\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 469.397 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 469.397 Td /F1 12.0 Tf  [( const char* strstr\(const char* str, const char* target\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 443.141 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 443.141 Td /F1 12.0 Tf  [( char* strstr\(char* str, const char* target\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 416.885 Td /F1 12.0 Tf  [(constexpr char* strtok\(char* str, const char* delim, char** ptr\);)] TJ ET
+BT 34.016 390.629 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 390.629 Td /F1 12.0 Tf  [( const void* memchr\(const void* ptr, int ch, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 364.373 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 364.373 Td /F1 12.0 Tf  [( void* memchr\(void* ptr, int ch, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 338.117 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 338.117 Td /F1 12.0 Tf  [( int memcmp\(const void* lhs, const void* rhs, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 311.861 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 311.861 Td /F1 12.0 Tf  [( void* memset\(void* dest, int ch, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 285.605 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 285.605 Td /F1 12.0 Tf  [( void* memcpy\(void* dest, const void* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 259.349 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 259.349 Td /F1 12.0 Tf  [( void* memmove\(void* dest, const void* src, std::size_t count\);)] TJ ET
+BT 34.016 224.451 Td /F2 18.0 Tf  [(B. Modifications to )] TJ ET
+BT 185.018 224.451 Td /F2 18.0 Tf  [(")] TJ ET
+BT 195.008 224.451 Td /F2 18.0 Tf  [(21.8 Null-terminated sequence utilities)] TJ ET
+BT 489.992 224.451 Td /F2 18.0 Tf  [(")] TJ ET
+BT 34.016 203.067 Td /F2 18.0 Tf  [([c.wchar])] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 172.445 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 172.445 Td /F1 12.0 Tf  [( wchar_t* wcscpy\(wchar_t* dest, const wchar_t* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 146.189 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 146.189 Td /F1 12.0 Tf  [( wchar_t* wcsncpy\(wchar_t* dest, const wchar_t* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 119.933 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 119.933 Td /F1 12.0 Tf  [( wchar_t* wcscat\(wchar_t* dest, const wchar_t* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 93.677 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 93.677 Td /F1 12.0 Tf  [( wchar_t* wcsncat\(wchar_t* dest, const wchar_t* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 67.421 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 67.421 Td /F1 12.0 Tf  [( std::size_t wcslen\(const wchar_t* str\);)] TJ ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Annots [ 24 0 R 26 0 R 28 0 R ]
+/Contents 23 0 R
+>>
+endobj
+23 0 obj
+<<
+/Length 6301 >>
+stream
+
+0.000 0.000 0.000 rg
+0.000 0.000 0.800 RG
+0.6 w 0 J [  ] 0 d
+0.000 0.502 0.000 rg
+BT 34.016 784.469 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 784.469 Td /F1 12.0 Tf  [( int wcscmp\(const wchar_t* lhs, const wchar_t* rhs\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 758.213 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 758.213 Td /F1 12.0 Tf  [( int wcsncmp\(const wchar_t* lhs, const wchar_t* rhs, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 731.957 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 731.957 Td /F1 12.0 Tf  [( const wchar_t* wcschr\(const wchar_t* str, wchar_t ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 705.701 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 705.701 Td /F1 12.0 Tf  [( wchar_t* wcschr\(wchar_t* str, wchar_t ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 679.445 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 679.445 Td /F1 12.0 Tf  [( const wchar_t* wcsrchr\(const wchar_t* str, wchar_t ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 653.189 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 653.189 Td /F1 12.0 Tf  [( wchar_t* wcsrchr\(wchar_t* str, wchar_t ch\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 626.933 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 626.933 Td /F1 12.0 Tf  [( std::size_t wcsspn\(const wchar_t* dest, const wchar_t* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 600.677 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 600.677 Td /F1 12.0 Tf  [( std::size_t wcscspn\(const wchar_t* dest, const wchar_t* src\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 574.421 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 574.421 Td /F1 12.0 Tf  [( const wchar_t* wcspbrk\(const wchar_t* dest, const wchar_t* breakset\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 548.165 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 548.165 Td /F1 12.0 Tf  [( wchar_t* wcspbrk\(wchar_t* dest, const wchar_t* breakset\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 521.909 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 521.909 Td /F1 12.0 Tf  [( const wchar_t* wcsstr\(const wchar_t* str, const wchar_t* target\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 495.653 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 495.653 Td /F1 12.0 Tf  [( wchar_t* wcsstr\(wchar_t* str, const wchar_t* target\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 469.397 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 469.397 Td /F1 12.0 Tf  [( wchar_t* wcstok\(wchar_t* str, const wchar_t* delim, wchar_t** ptr\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 443.141 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 443.141 Td /F1 12.0 Tf  [( wchar_t* wmemcpy\(wchar_t* dest, const wchar_t* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 416.885 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 416.885 Td /F1 12.0 Tf  [( wchar_t* wmemmove\(wchar_t* dest, const wchar_t* src, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 390.629 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 390.629 Td /F1 12.0 Tf  [( int wmemcmp\(const wchar_t* lhs, const wchar_t* rhs, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 364.373 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 364.373 Td /F1 12.0 Tf  [( const wchar_t* wmemchr\(const wchar_t* ptr, wchar_t ch, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 338.117 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 338.117 Td /F1 12.0 Tf  [( wchar_t* wmemchr\(wchar_t* ptr, wchar_t ch, std::size_t count\);)] TJ ET
+0.000 0.502 0.000 rg
+BT 34.016 311.861 Td /F1 12.0 Tf  [(constexpr)] TJ ET
+0.000 0.000 0.000 rg
+BT 80.672 311.861 Td /F1 12.0 Tf  [( wchar_t* wmemset\(wchar_t* dest, wchar_t ch, std::size_t count\);)] TJ ET
+BT 34.016 276.963 Td /F2 18.0 Tf  [(C. Modify [support.limits.general]/3)] TJ ET
+BT 34.016 246.341 Td /F1 12.0 Tf  [(#define __cpp_lib_constexpr )] TJ ET
+BT 176.660 246.341 Td /F1 12.0 Tf  [(201811L)] TJ ET
+0.000 0.000 0.000 RG
+0.6 w 0 J [  ] 0 d
+176.660 248.741 m 219.992 248.741 l S
+0.000 0.502 0.000 rg
+BT 222.992 246.341 Td /F1 12.0 Tf  [(DATE OF ADOPTION)] TJ ET
+0.000 0.502 0.000 RG
+0.6 w 0 J [  ] 0 d
+222.992 243.641 m 337.640 243.641 l S
+0.000 0.000 0.000 rg
+BT 34.016 204.601 Td /F2 24.0 Tf  [(V. Revision History)] TJ ET
+BT 34.016 171.413 Td /F1 12.0 Tf  [(Revision 0: * Initial proposal)] TJ ET
+BT 34.016 129.673 Td /F2 24.0 Tf  [(VI. References:)] TJ ET
+0.000 0.000 0.000 RG
+57.816 99.590 m 
+57.816 100.140 57.589 100.686 57.201 101.075 c
+56.812 101.464 56.266 101.690 55.716 101.690 c
+55.166 101.690 54.620 101.464 54.231 101.075 c
+53.842 100.686 53.616 100.140 53.616 99.590 c
+53.616 99.040 53.842 98.494 54.231 98.105 c
+54.620 97.717 55.166 97.490 55.716 97.490 c
+56.266 97.490 56.812 97.717 57.201 98.105 c
+57.589 98.494 57.816 99.040 57.816 99.590 c f
+BT 64.016 96.485 Td /F1 12.0 Tf  [([neargye] Proof of concept for <cstring> and <cwchar> functions )] TJ ET
+0.000 0.000 0.800 rg
+BT 381.332 96.485 Td /F1 12.0 Tf  [(https://github.com/Neargye/cstring-)] TJ ET
+0.000 0.000 0.800 RG
+0.6 w 0 J [  ] 0 d
+381.332 93.785 m 552.992 93.785 l S
+BT 64.016 82.229 Td /F1 12.0 Tf  [(constexpr-proposal)] TJ ET
+0.6 w 0 J [  ] 0 d
+64.016 79.529 m 155.996 79.529 l S
+0.000 0.000 0.000 rg
+BT 155.996 82.229 Td /F1 12.0 Tf  [(.)] TJ ET
+0.000 0.000 0.000 RG
+57.816 71.078 m 
+57.816 71.628 57.589 72.174 57.201 72.563 c
+56.812 72.952 56.266 73.178 55.716 73.178 c
+55.166 73.178 54.620 72.952 54.231 72.563 c
+53.842 72.174 53.616 71.628 53.616 71.078 c
+53.616 70.528 53.842 69.982 54.231 69.593 c
+54.620 69.205 55.166 68.978 55.716 68.978 c
+56.266 68.978 56.812 69.205 57.201 69.593 c
+57.589 69.982 57.816 70.528 57.816 71.078 c f
+BT 64.016 67.973 Td /F1 12.0 Tf  [([P0202R0] A Proposal to Add Constexpr Modifiers to Functions in <cwchar> and <cstring> Headers )] TJ ET
+0.000 0.000 0.800 rg
+BT 64.016 53.717 Td /F1 12.0 Tf  [(http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html)] TJ ET
+0.000 0.000 0.800 RG
+0.6 w 0 J [  ] 0 d
+64.016 51.017 m 414.344 51.017 l S
+0.000 0.000 0.000 rg
+BT 414.344 53.717 Td /F1 12.0 Tf  [(.)] TJ ET
+endstream
+endobj
+24 0 obj
+<< /Type /Annot
+/Subtype /Link
+/A 25 0 R
+/Border [0 0 0]
+/H /I
+/Rect [ 381.3317 95.4055 552.9917 107.2855 ]
+>>
+endobj
+25 0 obj
+<< /Type /Action
+/S /URI
+/URI (https://github.com/Neargye/cstring-constexpr-proposal)
+>>
+endobj
+26 0 obj
+<< /Type /Annot
+/Subtype /Link
+/A 27 0 R
+/Border [0 0 0]
+/H /I
+/Rect [ 64.0157 81.1495 155.9957 93.0295 ]
+>>
+endobj
+27 0 obj
+<< /Type /Action
+/S /URI
+/URI (https://github.com/Neargye/cstring-constexpr-proposal)
+>>
+endobj
+28 0 obj
+<< /Type /Annot
+/Subtype /Link
+/A 29 0 R
+/Border [0 0 0]
+/H /I
+/Rect [ 64.0157 52.6375 414.3437 64.5175 ]
+>>
+endobj
+29 0 obj
+<< /Type /Action
+/S /URI
+/URI (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html)
+>>
+endobj
+xref
+0 30
+0000000000 65535 f 
+0000000009 00000 n 
+0000000074 00000 n 
+0000000120 00000 n 
+0000000327 00000 n 
+0000000356 00000 n 
+0000000470 00000 n 
+0000000559 00000 n 
+0000005274 00000 n 
+0000005383 00000 n 
+0000005491 00000 n 
+0000005597 00000 n 
+0000005708 00000 n 
+0000005836 00000 n 
+0000005912 00000 n 
+0000006040 00000 n 
+0000006118 00000 n 
+0000006202 00000 n 
+0000012602 00000 n 
+0000012730 00000 n 
+0000012815 00000 n 
+0000012880 00000 n 
+0000018315 00000 n 
+0000018413 00000 n 
+0000024767 00000 n 
+0000024894 00000 n 
+0000024999 00000 n 
+0000025124 00000 n 
+0000025229 00000 n 
+0000025354 00000 n 
+trailer
+<<
+/Size 30
+/Root 1 0 R
+/Info 5 0 R
+>>
+startxref
+25474
+%%EOF
