@@ -8,7 +8,7 @@ Antony Polukhin <antoshkka@gmail.com>
 
 Date: 2019-10-24
 
-# Add Constexpr Modifiers to Functions in `<cstring>` and `<cwchar>` Headers
+# Add Constexpr Modifiers to Functions in _\<cstring>_ and _\<cwchar>_ Headers
 
 # I. Introduction and Motivation
 
@@ -163,7 +163,7 @@ All the additions to the Standard are marked with <font color='green'>underlined
 
 ## C. Modify [support.limits.general]/3
 
-#define __cpp_lib_constexpr ~~201811L~~ <font color='green'>_DATE OF ADOPTION_</font>
+\#define __cpp_lib_constexpr ~~201811L~~ <font color='green'>_DATE OF ADOPTION_</font>
 
 # V. Revision History
 
@@ -171,5 +171,5 @@ Revision 0:
 * Initial proposal
 
 # VI. References:
-* [neargye] Proof of concept for `<cstrings>` and `<cwchar>` functions <https://github.com/Neargye/cstring-constexpr-proposal>.
-* [P0202R0] A Proposal to Add Constexpr Modifiers to Functions in <algorithm> and <cstring> Headers <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html>.
+* [neargye] Proof of concept for _\<cstring>_ and _\<cwchar>_ functions <https://github.com/Neargye/cstring-constexpr-proposal>.
+* [P0202R0] A Proposal to Add Constexpr Modifiers to Functions in _\<cwchar>_ and _\<cstring>_ Headers <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html>.
