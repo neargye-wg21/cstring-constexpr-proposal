@@ -6,7 +6,7 @@ Daniil Goncharov <neargye@gmail.com>
 
 Antony Polukhin <antoshkka@gmail.com>
 
-Date: 2019-10-28
+Date: 2019-10-31
 
 # Add Constexpr Modifiers to Functions in \<cstring> and \<cwchar> Headers
 
@@ -18,7 +18,7 @@ Consider the simple example:
 
 ```cpp
 int main() {  
-    constexpr char[] str = "abcd"; // OK  
+    constexpr char str[] = "abcd"; // OK  
     constexpr auto str_len = std::strlen(str); // Fail  
 }
 ```
