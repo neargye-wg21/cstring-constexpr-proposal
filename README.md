@@ -6,7 +6,7 @@ Antony Polukhin <antoshkka@gmail.com>
 
 # Full Text for Proposal
 
-[P1944R0](papers/proposal.md)
+* [P1944R0](papers/P1944R0.pdf)
 
 # References:
 * https://stdcpp.ru/proposals/b6000ec7-9db8-41b1-9a1e-1fe00a424bbd
