@@ -6,7 +6,7 @@ Daniil Goncharov <neargye@gmail.com>
 
 Antony Polukhin <antoshkka@gmail.com>
 
-Date: 2019-10-31
+Date: 2019-11-9
 
 # Add Constexpr Modifiers to Functions in \<cstring> and \<cwchar> Headers
 
@@ -40,9 +40,9 @@ All the functions from `<cstring>` header must be marked with `constexpr`, excep
 
 However those functions are not only popular, but also are widely used across Standard Library to gain better performance. Not making them `constexpr` will force standard Library developer to have compiler intrinsics for them anyway. This is a hard step that must be done.
 
-Clang already support `constexpr` __builtin_memchr, __builtin_memcmp, __builtin_memcpy, __builtin_memmove <https://reviews.llvm.org/rL338941>.
+Clang already support `constexpr` `__builtin_memchr`, `__builtin_memcmp`, `__builtin_memcpy`, `__builtin_memmove` <https://reviews.llvm.org/rL338941>.
 
-Note that std::bit_cast and std::is_constant_evaluated() could be used to implement those functions in pure C++ (in theory).
+Note that `std::bit_cast` and `std::is_constant_evaluated` could be used to implement those functions in pure C++ (in theory).
 
 ### C. Add `strtok(char* str, const char* delim, char** ptr)`
 
@@ -50,13 +50,13 @@ Unlike `strtok(char* str, const char* delim)`, this function does not update sta
 
 This function is analogous to the existing `std::wcstok` function, but works with char.
 
-```cpp
+```
 constexpr char* strtok(char* str, const char* delim, char** ptr);
 ```
 
 ### D. Apply the `constexpr` to the analogs in <cwchar>
 
-As well as similar functions from `<cstrings>` for char, these functions from `<cwchar>` are useful when working with wchar_t in `constexpr`. Note that we do not propose to constexprify the functons that touch global state or work with locales.
+As well as similar functions from `<cstrings>` for char, these functions from `<cwchar>` are useful when working with `wchar_t` in `constexpr`. Note that we do not propose to constexprify the functons that touch global state or work with locales.
 
 ## IV. Proposed wording relative to n4835
 
@@ -175,6 +175,6 @@ Revision 0:
 * Initial proposal
 
 ## VI. References:
-* [N4835] Working Draft, Standard for Programming Language C++. Available online at <https://github.com/cplusplus/draft/raw/master/papers/n4835.pdf>
+* [N4835] Working Draft, Standard for Programming Language C++. Available online at <https://github.com/cplusplus/draft/raw/master/papers/n4835.pdf>.
 * [neargye] Proof of concept for \<cstring> and \<cwchar> functions <https://github.com/Neargye/cstring-constexpr-proposal>.
 * [P0202R0] A Proposal to Add Constexpr Modifiers to Functions in \<cwchar> and \<cstring> Headers <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0202r0.html>.
