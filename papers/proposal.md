@@ -6,7 +6,7 @@ Daniil Goncharov <neargye@gmail.com>
 
 Antony Polukhin <antoshkka@gmail.com>
 
-Date: 2019-11-9
+Date: 2019-11-13
 
 # Add Constexpr Modifiers to Functions in \<cstring> and \<cwchar> Headers
 
@@ -24,6 +24,7 @@ int main() {
 ```
 
 ## II. Impact on the Standard
+
 This proposal is a pure library extension. It proposes changes to existing headers `<cstring>` and `<cwchar>` such that the changes do not break existing code and do not degrade performance. It does not require any changes in the core language in simple cases of non assembly optimized Standard Library, and it could be implemented in standard C++, except for the memchr, memcmp, memset, memcpy and memmove functions.
 
 ## III. Design Decisions
@@ -62,7 +63,7 @@ As well as similar functions from `<cstrings>` for char, these functions from `<
 
 Modifications to "21.5 Null-terminated sequence utilities" [c.strings]
 
-All the additions to the Standard are marked with <font color='green'>underlined green</font>.
+All the additions to the Standard are marked with <font color='green'>green</font>.
 
 ### A. Modifications to "21.5.3 Header \<cstring> synopsis" [cstring.syn]
 
@@ -166,7 +167,10 @@ All the additions to the Standard are marked with <font color='green'>underlined
 
 ### C. Modify to "17.3.2 Header <version> synopsis" [version.syn]
 
-\#define __cpp_lib_constexpr ~~201811L~~ <font color='green'>_DATE OF ADOPTION_</font>
+<font color='green'>
+\#define __cpp_lib_constexpr_cstring _DATE OF ADOPTION_  
+\#define __cpp_lib_constexpr_cwchar _DATE OF ADOPTION_  
+</font>
 
 ## V. Revision History
 
