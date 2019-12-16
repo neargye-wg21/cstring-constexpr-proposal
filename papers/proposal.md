@@ -55,7 +55,7 @@ This function is analogous to the existing `std::wcstok` function, but works wit
 constexpr char* strtok(char* str, const char* delim, char** ptr);
 ```
 
-### D. Apply the `constexpr` to the analogs in <cwchar>
+### D. Apply the `constexpr` to the analogs in `<cwchar>`
 
 As well as similar functions from `<cstrings>` for char, these functions from `<cwchar>` are useful when working with `wchar_t` in `constexpr`. Note that we do not propose to constexprify the functons that touch global state or work with locales.
 
