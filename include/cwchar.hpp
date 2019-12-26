@@ -104,11 +104,6 @@ constexpr wchar_t* wcsncat(wchar_t* dest, const wchar_t* src, std::size_t count)
   }
 }
 
-// constexpr work with a locale requires constexpr locale.
-std::size_t wcsxfrm(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
-  return std::wcsxfrm(dest, src, count);
-}
-
 constexpr std::size_t wcslen(const wchar_t* str) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
@@ -168,11 +163,6 @@ constexpr int wcsncmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count)
   } else {
     return std::wcsncmp(lhs, rhs, count);
   }
-}
-
-// constexpr work with a locale requires constexpr locale.
-int wcscoll(const wchar_t* lhs, const wchar_t* rhs) noexcept {
-  return std::wcscoll(lhs, rhs);
 }
 
 constexpr const wchar_t* wcschr(const wchar_t* str, wchar_t ch) noexcept {

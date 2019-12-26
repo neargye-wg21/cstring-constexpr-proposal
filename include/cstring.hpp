@@ -108,11 +108,6 @@ constexpr char* strncat(char* dest, const char* src, std::size_t count) noexcept
   }
 }
 
-// constexpr work with a locale requires constexpr locale.
-std::size_t strxfrm(char* dest, const char* src, std::size_t count) noexcept {
-  return std::strxfrm(dest, src, count);
-}
-
 constexpr std::size_t strlen(const char* str) noexcept {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
@@ -177,11 +172,6 @@ constexpr int strncmp(const char* lhs, const char* rhs, std::size_t count) noexc
   } else {
     return std::strncmp(lhs, rhs, count);
   }
-}
-
-// constexpr work with a locale requires constexpr locale.
-int strcoll(const char* lhs, const char* rhs) noexcept {
-  return std::strcoll(lhs, rhs);
 }
 
 constexpr const char* strchr(const char* str, int ch) noexcept {
@@ -365,12 +355,6 @@ constexpr char* strstr(char* str, const char* target) noexcept {
   }
 }
 
-// Unlike most other tokenizers, the delimiters in strtok can be different for each subsequent token, and can even depend on the contents of the previous tokens.
-// Each call to this function modifies a static variable, so can't be constexpr.
-char* strtok(char* str, const char* delim) noexcept {
-  return std::strtok(str, delim);
-}
-
 // Unlike std::strtok, this function does not update static storage: it stores the parser state in the user-provided location.
 constexpr char* strtok(char* str, const char* delim, char** ptr) noexcept {
   // Naive implementation.
@@ -481,11 +465,6 @@ constexpr void* memmove(void* dest, const void* src, std::size_t count) noexcept
   } else {
     return std::memmove(dest, src, count);
   }
-}
-
-// System error code non constexpr context.
-char* strerror(int errnum) noexcept {
-  return std::strerror(errnum);
 }
 
 #if defined(_MSC_VER)
