@@ -33,7 +33,7 @@ namespace nstd {
 #  pragma warning(disable : 4996)
 #endif
 
-constexpr wchar_t* wcscpy(wchar_t* dest, const wchar_t* src) noexcept {
+constexpr wchar_t* wcscpy(wchar_t* dest, const wchar_t* src) {
   if (detail::is_constant_evaluated()) {
     if (dest != nullptr && src != nullptr) {
       wchar_t* d = dest;
@@ -47,7 +47,7 @@ constexpr wchar_t* wcscpy(wchar_t* dest, const wchar_t* src) noexcept {
   }
 }
 
-constexpr wchar_t* wcsncpy(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
+constexpr wchar_t* wcsncpy(wchar_t* dest, const wchar_t* src, std::size_t count) {
   if (detail::is_constant_evaluated()) {
     if (dest != nullptr && src != nullptr && count != 0) {
       wchar_t* d = dest;
@@ -67,7 +67,7 @@ constexpr wchar_t* wcsncpy(wchar_t* dest, const wchar_t* src, std::size_t count)
   }
 }
 
-constexpr wchar_t* wcscat(wchar_t* dest, const wchar_t* src) noexcept {
+constexpr wchar_t* wcscat(wchar_t* dest, const wchar_t* src) {
   if (detail::is_constant_evaluated()) {
     if (dest != nullptr && src != nullptr) {
       wchar_t* d = dest;
@@ -83,7 +83,7 @@ constexpr wchar_t* wcscat(wchar_t* dest, const wchar_t* src) noexcept {
   }
 }
 
-constexpr wchar_t* wcsncat(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
+constexpr wchar_t* wcsncat(wchar_t* dest, const wchar_t* src, std::size_t count) {
   if (detail::is_constant_evaluated()) {
     if (dest != nullptr && src != nullptr && count != 0) {
       wchar_t* d = dest;
@@ -104,7 +104,7 @@ constexpr wchar_t* wcsncat(wchar_t* dest, const wchar_t* src, std::size_t count)
   }
 }
 
-constexpr std::size_t wcslen(const wchar_t* str) noexcept {
+constexpr std::size_t wcslen(const wchar_t* str) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
     std::size_t i = 0;
@@ -123,7 +123,7 @@ constexpr std::size_t wcslen(const wchar_t* str) noexcept {
   }
 }
 
-constexpr int wcscmp(const wchar_t* lhs, const wchar_t* rhs) noexcept {
+constexpr int wcscmp(const wchar_t* lhs, const wchar_t* rhs) {
   if (detail::is_constant_evaluated()) {
     if (lhs == nullptr || rhs == nullptr) {
       return rhs != nullptr ? -1 : 1;
@@ -141,7 +141,7 @@ constexpr int wcscmp(const wchar_t* lhs, const wchar_t* rhs) noexcept {
   }
 }
 
-constexpr int wcsncmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count) noexcept {
+constexpr int wcsncmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
     if (lhs == nullptr || rhs == nullptr) {
@@ -165,7 +165,7 @@ constexpr int wcsncmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count)
   }
 }
 
-constexpr const wchar_t* wcschr(const wchar_t* str, wchar_t ch) noexcept {
+constexpr const wchar_t* wcschr(const wchar_t* str, wchar_t ch) {
   if (detail::is_constant_evaluated()) {
     if (str != nullptr) {
       for (std::size_t i = 0; str[i] != L'\0'; ++i) {
@@ -181,7 +181,7 @@ constexpr const wchar_t* wcschr(const wchar_t* str, wchar_t ch) noexcept {
   }
 }
 
-constexpr wchar_t* wcschr(wchar_t* str, wchar_t ch) noexcept {
+constexpr wchar_t* wcschr(wchar_t* str, wchar_t ch) {
   if (detail::is_constant_evaluated()) {
     if (str != nullptr) {
       for (std::size_t i = 0; str[i] != L'\0'; ++i) {
@@ -197,7 +197,7 @@ constexpr wchar_t* wcschr(wchar_t* str, wchar_t ch) noexcept {
   }
 }
 
-constexpr const wchar_t* wcsrchr(const wchar_t* str, wchar_t ch) noexcept {
+constexpr const wchar_t* wcsrchr(const wchar_t* str, wchar_t ch) {
   if (detail::is_constant_evaluated()) {
     int p = -1;
     if (str != nullptr) {
@@ -214,7 +214,7 @@ constexpr const wchar_t* wcsrchr(const wchar_t* str, wchar_t ch) noexcept {
   }
 }
 
-constexpr wchar_t* wcsrchr(wchar_t* str, wchar_t ch) noexcept {
+constexpr wchar_t* wcsrchr(wchar_t* str, wchar_t ch) {
   if (detail::is_constant_evaluated()) {
     int p = -1;
     if (str != nullptr) {
@@ -231,7 +231,7 @@ constexpr wchar_t* wcsrchr(wchar_t* str, wchar_t ch) noexcept {
   }
 }
 
-constexpr std::size_t wcsspn(const wchar_t* dest, const wchar_t* src) noexcept {
+constexpr std::size_t wcsspn(const wchar_t* dest, const wchar_t* src) {
   if (detail::is_constant_evaluated()) {
     std::size_t i = 0;
     if (dest != nullptr) {
@@ -246,7 +246,7 @@ constexpr std::size_t wcsspn(const wchar_t* dest, const wchar_t* src) noexcept {
   }
 }
 
-constexpr std::size_t wcscspn(const wchar_t* dest, const wchar_t* src) noexcept {
+constexpr std::size_t wcscspn(const wchar_t* dest, const wchar_t* src) {
   if (detail::is_constant_evaluated()) {
     std::size_t i = 0;
     if (dest != nullptr) {
@@ -261,7 +261,7 @@ constexpr std::size_t wcscspn(const wchar_t* dest, const wchar_t* src) noexcept 
   }
 }
 
-constexpr const wchar_t* wcspbrk(const wchar_t* dest, const wchar_t* breakset) noexcept {
+constexpr const wchar_t* wcspbrk(const wchar_t* dest, const wchar_t* breakset) {
   if (detail::is_constant_evaluated()) {
     if (dest != nullptr && breakset != nullptr) {
       for (std::size_t i = 0; dest[i] != L'\0'; ++i) {
@@ -277,7 +277,7 @@ constexpr const wchar_t* wcspbrk(const wchar_t* dest, const wchar_t* breakset) n
   }
 }
 
-constexpr wchar_t* wcspbrk(wchar_t* dest, const wchar_t* breakset) noexcept {
+constexpr wchar_t* wcspbrk(wchar_t* dest, const wchar_t* breakset) {
   if (detail::is_constant_evaluated()) {
     if (dest != nullptr && breakset != nullptr) {
       for (std::size_t i = 0; dest[i] != L'\0'; ++i) {
@@ -293,7 +293,7 @@ constexpr wchar_t* wcspbrk(wchar_t* dest, const wchar_t* breakset) noexcept {
   }
 }
 
-constexpr const wchar_t* wcsstr(const wchar_t* str, const wchar_t* target) noexcept {
+constexpr const wchar_t* wcsstr(const wchar_t* str, const wchar_t* target) {
   if (detail::is_constant_evaluated()) {
     if (wchar_t c = target != nullptr ? *target++ : L'\0'; c != L'\0' && str != nullptr) {
       std::size_t len = wcslen(target);
@@ -314,7 +314,7 @@ constexpr const wchar_t* wcsstr(const wchar_t* str, const wchar_t* target) noexc
   }
 }
 
-constexpr wchar_t* wcsstr(wchar_t* str, const wchar_t* target) noexcept {
+constexpr wchar_t* wcsstr(wchar_t* str, const wchar_t* target) {
   if (detail::is_constant_evaluated()) {
     if (wchar_t c = target != nullptr ? *target++ : L'\0'; c != L'\0' && str != nullptr) {
       std::size_t len = wcslen(target);
@@ -335,7 +335,7 @@ constexpr wchar_t* wcsstr(wchar_t* str, const wchar_t* target) noexcept {
   }
 }
 
-constexpr wchar_t* wcstok(wchar_t* str, const wchar_t* delim, wchar_t** ptr) noexcept {
+constexpr wchar_t* wcstok(wchar_t* str, const wchar_t* delim, wchar_t** ptr) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER) || defined(__clang__)
     if (str == nullptr && (str = *ptr) == nullptr) {
@@ -361,7 +361,7 @@ constexpr wchar_t* wcstok(wchar_t* str, const wchar_t* delim, wchar_t** ptr) noe
   }
 }
 
-constexpr wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
+constexpr wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, std::size_t count) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     if (dest != nullptr && src != nullptr && count != 0) {
@@ -379,7 +379,7 @@ constexpr wchar_t* wmemcpy(wchar_t* dest, const wchar_t* src, std::size_t count)
   }
 }
 
-constexpr wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, std::size_t count) noexcept {
+constexpr wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, std::size_t count) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     if (dest != nullptr && src != nullptr && count != 0) {
@@ -406,7 +406,7 @@ constexpr wchar_t* wmemmove(wchar_t* dest, const wchar_t* src, std::size_t count
   }
 }
 
-constexpr int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count) noexcept {
+constexpr int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__)
     if (lhs != nullptr && rhs != nullptr && count != 0) {
@@ -426,7 +426,7 @@ constexpr int wmemcmp(const wchar_t* lhs, const wchar_t* rhs, std::size_t count)
   }
 }
 
-constexpr const wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, std::size_t count) noexcept {
+constexpr const wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, std::size_t count) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     if (ptr != nullptr && count != 0) {
@@ -446,7 +446,7 @@ constexpr const wchar_t* wmemchr(const wchar_t* ptr, wchar_t ch, std::size_t cou
   }
 }
 
-constexpr wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count) noexcept {
+constexpr wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count) {
   if (detail::is_constant_evaluated()) {
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
     if (ptr != nullptr && count != 0) {
@@ -466,7 +466,7 @@ constexpr wchar_t* wmemchr(wchar_t* ptr, wchar_t ch, std::size_t count) noexcept
   }
 }
 
-constexpr wchar_t* wmemset(wchar_t* dest, wchar_t ch, std::size_t count) noexcept {
+constexpr wchar_t* wmemset(wchar_t* dest, wchar_t ch, std::size_t count) {
   if (detail::is_constant_evaluated()) {
   // clang no __builtin_memset ?
 #if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER) || defined(__clang__)
