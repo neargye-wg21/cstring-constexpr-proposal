@@ -424,13 +424,11 @@ constexpr int memcmp(const void* lhs, const void* rhs, std::size_t count) noexce
 
 constexpr void* memset(void* dest, int ch, std::size_t count) noexcept {
   if (detail::is_constant_evaluated()) {
-#if defined(__GNUC__) && !defined(__clang__) || defined(_MSC_VER)
+#if defined(__GNUC__) || defined(__clang__) || defined(_MSC_VER)
     (void)dest;
     (void)ch;
     (void)count;
     return 0; //TODO
-#elif defined(__clang__)
-    return __builtin_memset(dest, ch, count);
 #endif
   } else {
     return std::memset(dest, ch, count);

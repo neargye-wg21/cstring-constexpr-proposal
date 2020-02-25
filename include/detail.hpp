@@ -22,9 +22,7 @@
 
 #pragma once
 
-namespace nstd {
-
-namespace detail {
+namespace nstd::detail {
 
 inline constexpr bool is_constant_evaluated() noexcept {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811L
@@ -35,5 +33,3 @@ inline constexpr bool is_constant_evaluated() noexcept {
 }
 
 } // namespace nstd::detail
-
-} // namespace nstd

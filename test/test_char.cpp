@@ -24,7 +24,6 @@
 #include <catch.hpp>
 
 #include <cstring.hpp>
-#include <cwchar.hpp>
 namespace proposal = nstd;
 
 #include <array>
@@ -302,8 +301,6 @@ TEST_CASE("memcmp") {
 #endif
 
 #if 0
-// clang error: constexpr variable 'm' must be initialized by a constant expression constexpr auto m = test_memset(ch);
-// note: subexpression not valid in a constant expression return __builtin_memset(dest, ch, count);
 TEST_CASE("memset") {
   auto test_memset = [](int ch) constexpr {
     std::array<int, 10> m = {};
