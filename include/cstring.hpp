@@ -213,7 +213,7 @@ constexpr const char* strrchr(const char* str, int ch) {
     // Naive implementation.
     int p = -1;
     if (str != nullptr) {
-      for (std::size_t i = 0; str[i] != '\0'; ++i) {
+      for (int i = 0; str[i] != '\0'; ++i) {
         if (str[i] == ch) {
           p = i;
         }
@@ -231,7 +231,7 @@ constexpr char* strrchr(char* str, int ch) {
     // Naive implementation.
     int p = -1;
     if (str != nullptr) {
-      for (std::size_t i = 0; str[i] != '\0'; ++i) {
+      for (int i = 0; str[i] != '\0'; ++i) {
         if (str[i] == ch) {
           p = i;
         }

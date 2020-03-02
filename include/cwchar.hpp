@@ -201,7 +201,7 @@ constexpr const wchar_t* wcsrchr(const wchar_t* str, wchar_t ch) {
   if (detail::is_constant_evaluated()) {
     int p = -1;
     if (str != nullptr) {
-      for (std::size_t i = 0; str[i] != L'\0'; ++i) {
+      for (int i = 0; str[i] != L'\0'; ++i) {
         if (str[i] == ch) {
           p = i;
         }
@@ -218,7 +218,7 @@ constexpr wchar_t* wcsrchr(wchar_t* str, wchar_t ch) {
   if (detail::is_constant_evaluated()) {
     int p = -1;
     if (str != nullptr) {
-      for (std::size_t i = 0; str[i] != L'\0'; ++i) {
+      for (int i = 0; str[i] != L'\0'; ++i) {
         if (str[i] == ch) {
           p = i;
         }

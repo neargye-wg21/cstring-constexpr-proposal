@@ -23,7 +23,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
-#include <cstring.hpp>
+#include <cwchar.hpp>
 namespace proposal = nstd;
 
 #include <array>
