@@ -1,0 +1,26 @@
+name: ubuntu
+
+on: [push, pull_request]
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+        - { cc: "gcc-10", cxx: "g++-10" }
+        - { cc: "clang-10", cxx: "clang++-10" }
+
+    name: "${{matrix.compiler.cxx}}"
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure CMake
+      run: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${{matrix.compiler.cc}} -DCMAKE_CXX_COMPILER=${{matrix.compiler.cxx}}
+
+    - name: Build
+      run: cmake --build . --config Debug
+
+    - name: Tests
+      run: ctest --output-on-failure -C Debug

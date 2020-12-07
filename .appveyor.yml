@@ -18,8 +18,6 @@ before_build:
 build_script:
   - cmake -A %PLATFORM% ..
   - cmake --build . --config Debug
-  - cmake --build . --config Release
 
 test_script:
   - ctest --output-on-failure -C Debug
-  - ctest --output-on-failure -C Release
