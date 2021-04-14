@@ -12,9 +12,6 @@
 
 ## Tested
 
-[![Build Status](https://travis-ci.org/Neargye/cstring-constexpr-proposal.svg?branch=master)](https://travis-ci.org/Neargye/cstring-constexpr-proposal)
-[![Build status](https://ci.appveyor.com/api/projects/status/af05o6972g9bc4ec/branch/master?svg=true)](https://ci.appveyor.com/project/Neargye/cstring-constexpr-proposal/branch/master)
-
-* GCC 9
-* Clang 9
+* GCC 10
+* Clang 10
 * Visual Studio 2019
